@@ -1,2 +1,5 @@
 onlyBuiltDependencies:
   - esbuild
+  - '@tailwindcss/oxide'
+packages:
+  - mcp-server

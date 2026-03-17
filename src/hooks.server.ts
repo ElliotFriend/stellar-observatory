@@ -1,45 +1,33 @@
-import { sequence } from "@sveltejs/kit/hooks"
-import { paymentHookFromConfig } from 'x402-sveltekit'
-import { ExactStellarScheme } from '@x402/stellar/exact/server'
-// import { registerExactEvmScheme } from "@x402/evm/exact/server"
-import { x402ResourceServer } from "@x402/core/server"
-import type { Network } from "@x402/core/types"
+import { sequence } from '@sveltejs/kit/hooks';
+import { paymentHookFromConfig } from 'x402-sveltekit';
+import { ExactStellarScheme } from '@x402/stellar/exact/server';
+import type { Network } from '@x402/core/types';
+import { env } from '$env/dynamic/private';
+import { env as publicEnv } from '$env/dynamic/public';
+import { endpoints } from '$lib/config/endpoints.js';
 
-interface StellarResourceServerConfig {
-    networks?: Network[]
-}
+const network = (publicEnv.PUBLIC_STELLAR_NETWORK ?? 'stellar:testnet') as Network;
+const payTo = env.PAYTO_ADDRESS ?? 'GDNB6ZWJ4HV5EMJYPJNTHTEMUJVFOHZX6VJE34KZGWKF4UQDJ7UCEQIO';
+const facilitatorUrl = env.FACILITATOR_URL ?? 'https://x402.org/facilitator';
 
-const registerExactStellarScheme = (server: x402ResourceServer, config?: StellarResourceServerConfig): x402ResourceServer => {
-    if (config?.networks && config.networks.length > 0) {
-        config.networks.forEach(network => {
-            server.register(network, new ExactStellarScheme())
-        })
-    } else {
-        server.register('stellar:*', new ExactStellarScheme())
-    }
-    return server
-}
+const routes = Object.fromEntries(
+	endpoints.map((ep) => [
+		`GET ${ep.path}`,
+		{
+			accepts: [{ scheme: 'exact' as const, network, payTo, price: ep.price }],
+			description: ep.description
+		}
+	])
+);
+
+const registerExactStellarScheme = (server: { register: (network: Network, scheme: ExactStellarScheme) => unknown }) => {
+	server.register('stellar:*', new ExactStellarScheme());
+};
 
 const x402Handle = paymentHookFromConfig({
-    facilitatorUrl: 'https://x402.org/facilitator',
-    schemes: [
-        // { register: registerExactEvmScheme },
-        { register: registerExactStellarScheme },
-        // { register: new ExactStellarScheme() },
-    ],
-    routes: {
-        'GET /api/premium': {
-            accepts: [
-                {
-                    scheme: 'exact',
-                    network: 'stellar:testnet',
-                    payTo: 'GDNB6ZWJ4HV5EMJYPJNTHTEMUJVFOHZX6VJE34KZGWKF4UQDJ7UCEQIO',
-                    price: '$0.01',
-                }
-            ],
-            description: 'Premium API endpoint',
-        },
-    },
+	facilitatorUrl,
+	schemes: [{ register: registerExactStellarScheme }],
+	routes
 });
 
-export const handle = sequence(x402Handle)
+export const handle = sequence(x402Handle);

@@ -5,18 +5,22 @@
 	import StarField from '$lib/components/StarField.svelte';
 	import { env } from '$env/dynamic/public';
 	import { getNetworkPassphrase, type StellarNetwork } from '$lib/config/network.js';
-	import { StellarWalletsKit } from '@creit-tech/stellar-wallets-kit';
-	import { Networks } from '@creit-tech/stellar-wallets-kit/types';
-	import { FreighterModule } from '@creit-tech/stellar-wallets-kit/modules/freighter';
+	import { onMount } from 'svelte';
 
 	let { children } = $props();
 
 	const network = (env.PUBLIC_STELLAR_NETWORK ?? 'stellar:testnet') as StellarNetwork;
 	const networkPassphrase = getNetworkPassphrase(network);
 
-	StellarWalletsKit.init({
-		modules: [new FreighterModule()],
-		network: network.includes('testnet') ? Networks.TESTNET : Networks.PUBLIC,
+	onMount(async () => {
+		const { StellarWalletsKit } = await import('@creit-tech/stellar-wallets-kit');
+		const { Networks } = await import('@creit-tech/stellar-wallets-kit/types');
+		const { FreighterModule } = await import('@creit-tech/stellar-wallets-kit/modules/freighter');
+
+		StellarWalletsKit.init({
+			modules: [new FreighterModule()],
+			network: network.includes('testnet') ? Networks.TESTNET : Networks.PUBLIC,
+		});
 	});
 </script>
 

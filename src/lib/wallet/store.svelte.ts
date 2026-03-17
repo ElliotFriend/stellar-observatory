@@ -1,4 +1,3 @@
-import { StellarWalletsKit } from '@creit-tech/stellar-wallets-kit';
 import type { ClientStellarSigner } from '@x402/stellar';
 import type { Network } from '@x402/core/types';
 import { createWalletKitSigner } from './adapter.js';
@@ -34,6 +33,7 @@ export async function connectWallet(network: Network, networkPassphrase: string)
 	error = null;
 
 	try {
+		const { StellarWalletsKit } = await import('@creit-tech/stellar-wallets-kit');
 		const { address: addr } = await StellarWalletsKit.authModal();
 		address = addr;
 		connected = true;
@@ -53,6 +53,7 @@ export async function connectWallet(network: Network, networkPassphrase: string)
 
 export async function disconnectWallet(): Promise<void> {
 	try {
+		const { StellarWalletsKit } = await import('@creit-tech/stellar-wallets-kit');
 		await StellarWalletsKit.disconnect();
 	} catch {
 		// Wallet may not support disconnect

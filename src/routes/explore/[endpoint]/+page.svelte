@@ -7,7 +7,7 @@
 	import type { PageData } from './$types';
 
 	let { data }: { data: PageData } = $props();
-	const { endpoint } = data;
+	const endpoint = $derived(data.endpoint);
 
 	const wallet = getWalletState();
 	const network = env.PUBLIC_STELLAR_NETWORK ?? 'stellar:testnet';

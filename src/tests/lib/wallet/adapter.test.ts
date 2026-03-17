@@ -1,16 +1,16 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 
+const mockSignAuthEntry = vi.fn();
+const mockSignTransaction = vi.fn();
+
 vi.mock('@creit-tech/stellar-wallets-kit', () => ({
 	StellarWalletsKit: {
-		signAuthEntry: vi.fn(),
-		signTransaction: vi.fn()
+		signAuthEntry: mockSignAuthEntry,
+		signTransaction: mockSignTransaction
 	}
 }));
 
-import { StellarWalletsKit } from '@creit-tech/stellar-wallets-kit';
 import { createWalletKitSigner } from '$lib/wallet/adapter.js';
-
-const mockKit = vi.mocked(StellarWalletsKit);
 
 describe('createWalletKitSigner', () => {
 	const address = 'GABC123';
@@ -26,14 +26,14 @@ describe('createWalletKitSigner', () => {
 	});
 
 	it('signAuthEntry delegates to StellarWalletsKit', async () => {
-		mockKit.signAuthEntry.mockResolvedValue({
+		mockSignAuthEntry.mockResolvedValue({
 			signedAuthEntry: 'signed-auth-entry-xdr'
 		});
 
 		const signer = createWalletKitSigner(address, passphrase);
 		const result = await signer.signAuthEntry('auth-entry-xdr');
 
-		expect(mockKit.signAuthEntry).toHaveBeenCalledWith('auth-entry-xdr', {
+		expect(mockSignAuthEntry).toHaveBeenCalledWith('auth-entry-xdr', {
 			address,
 			networkPassphrase: passphrase
 		});
@@ -41,28 +41,28 @@ describe('createWalletKitSigner', () => {
 	});
 
 	it('signAuthEntry uses opts override for networkPassphrase', async () => {
-		mockKit.signAuthEntry.mockResolvedValue({
+		mockSignAuthEntry.mockResolvedValue({
 			signedAuthEntry: 'signed'
 		});
 
 		const signer = createWalletKitSigner(address, passphrase);
 		await signer.signAuthEntry('entry', { networkPassphrase: 'custom-passphrase' });
 
-		expect(mockKit.signAuthEntry).toHaveBeenCalledWith('entry', {
+		expect(mockSignAuthEntry).toHaveBeenCalledWith('entry', {
 			address,
 			networkPassphrase: 'custom-passphrase'
 		});
 	});
 
 	it('signTransaction delegates to StellarWalletsKit', async () => {
-		mockKit.signTransaction.mockResolvedValue({
+		mockSignTransaction.mockResolvedValue({
 			signedTxXdr: 'signed-tx-xdr'
 		});
 
 		const signer = createWalletKitSigner(address, passphrase);
 		const result = await signer.signTransaction!('tx-xdr');
 
-		expect(mockKit.signTransaction).toHaveBeenCalledWith('tx-xdr', {
+		expect(mockSignTransaction).toHaveBeenCalledWith('tx-xdr', {
 			address,
 			networkPassphrase: passphrase
 		});

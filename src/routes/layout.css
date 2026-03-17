@@ -2,27 +2,31 @@
 @plugin '@tailwindcss/forms';
 
 @theme {
-	--color-space-900: #0a0e1a;
-	--color-space-800: #111827;
-	--color-space-700: #1e293b;
-	--color-space-600: #334155;
-	--color-nebula-400: #a78bfa;
-	--color-nebula-500: #8b5cf6;
-	--color-nebula-600: #7c3aed;
-	--color-stellar-400: #38bdf8;
-	--color-stellar-500: #0ea5e9;
-	--color-aurora-400: #34d399;
-	--color-aurora-500: #10b981;
-	--color-solar-400: #fbbf24;
-	--color-solar-500: #f59e0b;
+    --color-space-900: #0a0e1a;
+    --color-space-800: #111827;
+    --color-space-700: #1e293b;
+    --color-space-600: #334155;
+    --color-nebula-400: #a78bfa;
+    --color-nebula-500: #8b5cf6;
+    --color-nebula-600: #7c3aed;
+    --color-stellar-400: #38bdf8;
+    --color-stellar-500: #0ea5e9;
+    --color-aurora-400: #34d399;
+    --color-aurora-500: #10b981;
+    --color-solar-400: #fbbf24;
+    --color-solar-500: #f59e0b;
 }
 
 html {
-	background-color: var(--color-space-900);
-	color: #e2e8f0;
+    background-color: var(--color-space-900);
+    color: #e2e8f0;
 }
 
 body {
-	min-height: 100vh;
-	font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    min-height: 100vh;
+    font-family:
+        'Inter',
+        system-ui,
+        -apple-system,
+        sans-serif;
 }

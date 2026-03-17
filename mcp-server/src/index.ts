@@ -10,45 +10,40 @@ const baseUrl = process.env.OBSERVATORY_BASE_URL ?? 'http://localhost:5173';
 const network = (process.env.STELLAR_NETWORK ?? 'stellar:testnet') as Network;
 
 if (!secretKey) {
-	console.error('STELLAR_SECRET_KEY environment variable is required');
-	process.exit(1);
+    console.error('STELLAR_SECRET_KEY environment variable is required');
+    process.exit(1);
 }
 
 const httpClient = createMcpX402Client(secretKey, network);
 
 const server = new McpServer({
-	name: 'stellar-observatory',
-	version: '0.0.1',
+    name: 'stellar-observatory',
+    version: '0.0.1',
 });
 
 for (const tool of tools) {
-	server.tool(
-		tool.name,
-		tool.description,
-		tool.inputSchema,
-		async ({ arguments: args }) => {
-			try {
-				const result = await tool.handler(args as Record<string, unknown>, httpClient, baseUrl);
-				return {
-					content: [{ type: 'text' as const, text: JSON.stringify(result, null, 2) }]
-				};
-			} catch (error) {
-				const message = error instanceof Error ? error.message : String(error);
-				return {
-					content: [{ type: 'text' as const, text: `Error: ${message}` }],
-					isError: true
-				};
-			}
-		}
-	);
+    server.tool(tool.name, tool.description, tool.inputSchema, async ({ arguments: args }) => {
+        try {
+            const result = await tool.handler(args as Record<string, unknown>, httpClient, baseUrl);
+            return {
+                content: [{ type: 'text' as const, text: JSON.stringify(result, null, 2) }],
+            };
+        } catch (error) {
+            const message = error instanceof Error ? error.message : String(error);
+            return {
+                content: [{ type: 'text' as const, text: `Error: ${message}` }],
+                isError: true,
+            };
+        }
+    });
 }
 
 async function main() {
-	const transport = new StdioServerTransport();
-	await server.connect(transport);
+    const transport = new StdioServerTransport();
+    await server.connect(transport);
 }
 
 main().catch((error) => {
-	console.error('Fatal error:', error);
-	process.exit(1);
+    console.error('Fatal error:', error);
+    process.exit(1);
 });

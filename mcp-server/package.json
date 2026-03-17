@@ -1,20 +1,20 @@
 {
-	"name": "stellar-observatory-mcp",
-	"version": "0.0.1",
-	"private": true,
-	"type": "module",
-	"scripts": {
-		"build": "tsc",
-		"start": "node build/index.js",
-		"test": "vitest run"
-	},
-	"dependencies": {
-		"@modelcontextprotocol/sdk": "^1.12.1",
-		"@x402/core": "^2.7.0",
-		"@x402/stellar": "^2.7.0"
-	},
-	"devDependencies": {
-		"typescript": "^5.9.3",
-		"vitest": "^4.1.0"
-	}
+    "name": "stellar-observatory-mcp",
+    "version": "0.0.1",
+    "private": true,
+    "type": "module",
+    "scripts": {
+        "build": "tsc",
+        "start": "node build/index.js",
+        "test": "vitest run"
+    },
+    "dependencies": {
+        "@modelcontextprotocol/sdk": "^1.12.1",
+        "@x402/core": "^2.7.0",
+        "@x402/stellar": "^2.7.0"
+    },
+    "devDependencies": {
+        "typescript": "^5.9.3",
+        "vitest": "^4.1.0"
+    }
 }

@@ -9,25 +9,25 @@ import type { Network } from '@x402/core/types';
  * the wallet signer, and retries the request with the payment header.
  */
 export function createPaidFetch(signer: ClientStellarSigner, network: Network) {
-	const client = new x402Client().register(network, new ExactStellarScheme(signer));
-	const httpClient = new x402HTTPClient(client);
+    const client = new x402Client().register(network, new ExactStellarScheme(signer));
+    const httpClient = new x402HTTPClient(client);
 
-	return async (url: string, init?: RequestInit): Promise<Response> => {
-		const res = await fetch(url, init);
-		if (res.status !== 402) return res;
+    return async (url: string, init?: RequestInit): Promise<Response> => {
+        const res = await fetch(url, init);
+        if (res.status !== 402) return res;
 
-		const paymentRequired = httpClient.getPaymentRequiredResponse(
-			(name) => res.headers.get(name)
-		);
+        const paymentRequired = httpClient.getPaymentRequiredResponse((name) =>
+            res.headers.get(name),
+        );
 
-		const hookHeaders = await httpClient.handlePaymentRequired(paymentRequired);
-		if (hookHeaders) {
-			return fetch(url, { ...init, headers: { ...init?.headers, ...hookHeaders } });
-		}
+        const hookHeaders = await httpClient.handlePaymentRequired(paymentRequired);
+        if (hookHeaders) {
+            return fetch(url, { ...init, headers: { ...init?.headers, ...hookHeaders } });
+        }
 
-		const payload = await httpClient.createPaymentPayload(paymentRequired);
-		const headers = httpClient.encodePaymentSignatureHeader(payload);
+        const payload = await httpClient.createPaymentPayload(paymentRequired);
+        const headers = httpClient.encodePaymentSignatureHeader(payload);
 
-		return fetch(url, { ...init, headers: { ...init?.headers, ...headers } });
-	};
+        return fetch(url, { ...init, headers: { ...init?.headers, ...headers } });
+    };
 }

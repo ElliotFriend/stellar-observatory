@@ -4,68 +4,68 @@ const mockSignAuthEntry = vi.fn();
 const mockSignTransaction = vi.fn();
 
 vi.mock('@creit-tech/stellar-wallets-kit', () => ({
-	StellarWalletsKit: {
-		signAuthEntry: mockSignAuthEntry,
-		signTransaction: mockSignTransaction
-	}
+    StellarWalletsKit: {
+        signAuthEntry: mockSignAuthEntry,
+        signTransaction: mockSignTransaction,
+    },
 }));
 
 import { createWalletKitSigner } from '$lib/wallet/adapter.js';
 
 describe('createWalletKitSigner', () => {
-	const address = 'GABC123';
-	const passphrase = 'Test SDF Network ; September 2015';
+    const address = 'GABC123';
+    const passphrase = 'Test SDF Network ; September 2015';
 
-	beforeEach(() => {
-		vi.clearAllMocks();
-	});
+    beforeEach(() => {
+        vi.clearAllMocks();
+    });
 
-	it('returns a signer with the correct address', () => {
-		const signer = createWalletKitSigner(address, passphrase);
-		expect(signer.address).toBe(address);
-	});
+    it('returns a signer with the correct address', () => {
+        const signer = createWalletKitSigner(address, passphrase);
+        expect(signer.address).toBe(address);
+    });
 
-	it('signAuthEntry delegates to StellarWalletsKit', async () => {
-		mockSignAuthEntry.mockResolvedValue({
-			signedAuthEntry: 'signed-auth-entry-xdr'
-		});
+    it('signAuthEntry delegates to StellarWalletsKit', async () => {
+        mockSignAuthEntry.mockResolvedValue({
+            signedAuthEntry: 'signed-auth-entry-xdr',
+        });
 
-		const signer = createWalletKitSigner(address, passphrase);
-		const result = await signer.signAuthEntry('auth-entry-xdr');
+        const signer = createWalletKitSigner(address, passphrase);
+        const result = await signer.signAuthEntry('auth-entry-xdr');
 
-		expect(mockSignAuthEntry).toHaveBeenCalledWith('auth-entry-xdr', {
-			address,
-			networkPassphrase: passphrase
-		});
-		expect(result.signedAuthEntry).toBe('signed-auth-entry-xdr');
-	});
+        expect(mockSignAuthEntry).toHaveBeenCalledWith('auth-entry-xdr', {
+            address,
+            networkPassphrase: passphrase,
+        });
+        expect(result.signedAuthEntry).toBe('signed-auth-entry-xdr');
+    });
 
-	it('signAuthEntry uses opts override for networkPassphrase', async () => {
-		mockSignAuthEntry.mockResolvedValue({
-			signedAuthEntry: 'signed'
-		});
+    it('signAuthEntry uses opts override for networkPassphrase', async () => {
+        mockSignAuthEntry.mockResolvedValue({
+            signedAuthEntry: 'signed',
+        });
 
-		const signer = createWalletKitSigner(address, passphrase);
-		await signer.signAuthEntry('entry', { networkPassphrase: 'custom-passphrase' });
+        const signer = createWalletKitSigner(address, passphrase);
+        await signer.signAuthEntry('entry', { networkPassphrase: 'custom-passphrase' });
 
-		expect(mockSignAuthEntry).toHaveBeenCalledWith('entry', {
-			address,
-			networkPassphrase: 'custom-passphrase'
-		});
-	});
+        expect(mockSignAuthEntry).toHaveBeenCalledWith('entry', {
+            address,
+            networkPassphrase: 'custom-passphrase',
+        });
+    });
 
-	it('signTransaction delegates to StellarWalletsKit', async () => {
-		mockSignTransaction.mockResolvedValue({
-			signedTxXdr: 'signed-tx-xdr'
-		});
+    it('signTransaction delegates to StellarWalletsKit', async () => {
+        mockSignTransaction.mockResolvedValue({
+            signedTxXdr: 'signed-tx-xdr',
+        });
 
-		const signer = createWalletKitSigner(address, passphrase);
-		const result = await signer.signTransaction!('tx-xdr');
+        const signer = createWalletKitSigner(address, passphrase);
+        const result = await signer.signTransaction!('tx-xdr');
 
-		expect(mockSignTransaction).toHaveBeenCalledWith('tx-xdr', {
-			address,
-			networkPassphrase: passphrase
-		});
-		expect(result.signedTxXdr).toBe('signed-tx-xdr');
-	});
+        expect(mockSignTransaction).toHaveBeenCalledWith('tx-xdr', {
+            address,
+            networkPassphrase: passphrase,
+        });
+        expect(result.signedTxXdr).toBe('signed-tx-xdr');
+    });
 });

@@ -1,18 +1,18 @@
 {
-	"mcpServers": {
-		"svelte": {
-			"type": "http",
-			"url": "https://mcp.svelte.dev/mcp"
-		},
-		"stellar-observatory": {
-			"type": "stdio",
-			"command": "node",
-			"args": ["./mcp-server/build/index.js"],
-			"env": {
-				"STELLAR_SECRET_KEY": "",
-				"OBSERVATORY_BASE_URL": "http://localhost:5173",
-				"STELLAR_NETWORK": "stellar:testnet"
-			}
-		}
-	}
+    "mcpServers": {
+        "svelte": {
+            "type": "http",
+            "url": "https://mcp.svelte.dev/mcp"
+        },
+        "stellar-observatory": {
+            "type": "stdio",
+            "command": "node",
+            "args": ["./mcp-server/build/index.js"],
+            "env": {
+                "STELLAR_SECRET_KEY": "",
+                "OBSERVATORY_BASE_URL": "http://localhost:5173",
+                "STELLAR_NETWORK": "stellar:testnet"
+            }
+        }
+    }
 }

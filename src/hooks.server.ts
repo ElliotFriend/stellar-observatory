@@ -34,6 +34,10 @@ const facilitatorClient = new HTTPFacilitatorClient({
 const resourceServer = new x402ResourceServer(facilitatorClient);
 resourceServer.register('stellar:*', new ExactStellarScheme());
 
+const initPromise = resourceServer.initialize().catch((err) => {
+    console.error('Failed to initialize x402 resource server:', err);
+});
+
 const dynamicRoutes = new Map(
     endpoints.map((ep) => [
         ep.path,
@@ -57,6 +61,8 @@ const x402Handle: Handle = async ({ event, resolve }) => {
 
     const dynamicConfig = dynamicRoutes.get(event.url.pathname);
     if (!dynamicConfig) return resolve(event);
+
+    await initPromise;
 
     const clonedRequest = event.request.clone();
     const eventForAccepts = new Proxy(event, {

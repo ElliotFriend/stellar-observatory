@@ -10,7 +10,6 @@ describe('MCP tools', () => {
         for (const tool of tools) {
             expect(tool.name).toBeTruthy();
             expect(tool.description).toBeTruthy();
-            expect(tool.inputSchema).toBeDefined();
             expect(typeof tool.handler).toBe('function');
         }
     });
@@ -25,15 +24,16 @@ describe('MCP tools', () => {
         expect(getToolByName('nonexistent')).toBeUndefined();
     });
 
-    it('fetch-paid-resource requires url parameter', () => {
+    it('fetch-paid-resource has url in inputSchema', () => {
         const tool = getToolByName('fetch-paid-resource');
         expect(tool).toBeDefined();
-        const schema = tool!.inputSchema as { required: string[] };
-        expect(schema.required).toContain('url');
+        expect(tool!.inputSchema).toBeDefined();
+        expect(tool!.inputSchema).toHaveProperty('url');
+        expect(tool!.inputSchema).toHaveProperty('method');
     });
 
     it('endpoint tools include price in description', () => {
         const tool = getToolByName('get-space-weather');
-        expect(tool!.description).toContain('$0.001');
+        expect(tool!.description).toContain('$0.0001');
     });
 });

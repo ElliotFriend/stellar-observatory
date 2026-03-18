@@ -1,10 +1,11 @@
 import type { x402HTTPClient } from '@x402/core/client';
 import { paidFetch } from './x402-client.js';
+import { z } from 'zod';
 
 export interface ToolDefinition {
     name: string;
     description: string;
-    inputSchema: Record<string, unknown>;
+    inputSchema?: z.ZodRawShape;
     handler: (
         args: Record<string, unknown>,
         httpClient: x402HTTPClient,
@@ -50,7 +51,7 @@ export const tools: ToolDefinition[] = [
     ...endpointTools.map((ep) => ({
         name: ep.name,
         description: `${ep.description} (${ep.price})`,
-        inputSchema: { type: 'object' as const, properties: {}, required: [] as string[] },
+        inputSchema: undefined,
         handler: async (
             _args: Record<string, unknown>,
             httpClient: x402HTTPClient,
@@ -65,16 +66,11 @@ export const tools: ToolDefinition[] = [
         name: 'fetch-paid-resource',
         description: 'Generic x402 fetcher for any URL protected by the x402 payment protocol',
         inputSchema: {
-            type: 'object',
-            properties: {
-                url: { type: 'string', description: 'The URL to fetch' },
-                method: {
-                    type: 'string',
-                    description: 'HTTP method (default: GET)',
-                    enum: ['GET', 'POST', 'PUT', 'DELETE'],
-                },
-            },
-            required: ['url'],
+            url: z.string().describe('The URL to fetch'),
+            method: z
+                .enum(['GET', 'POST', 'PUT', 'DELETE'])
+                .optional()
+                .describe('HTTP method (default: GET)'),
         },
         handler: async (
             args: Record<string, unknown>,

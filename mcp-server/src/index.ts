@@ -23,20 +23,27 @@ const server = new McpServer({
 });
 
 for (const tool of tools) {
-    server.tool(tool.name, tool.description, tool.inputSchema, async ({ arguments: args }) => {
-        try {
-            const result = await tool.handler(args as Record<string, unknown>, httpClient, baseUrl);
-            return {
-                content: [{ type: 'text' as const, text: JSON.stringify(result, null, 2) }],
-            };
-        } catch (error) {
-            const message = error instanceof Error ? error.message : String(error);
-            return {
-                content: [{ type: 'text' as const, text: `Error: ${message}` }],
-                isError: true,
-            };
-        }
-    });
+    server.registerTool(
+        tool.name,
+        {
+            description: tool.description,
+            inputSchema: tool.inputSchema,
+        },
+        async (args: Record<string, unknown>) => {
+            try {
+                const result = await tool.handler(args, httpClient, baseUrl);
+                return {
+                    content: [{ type: 'text' as const, text: JSON.stringify(result, null, 2) }],
+                };
+            } catch (error) {
+                const message = error instanceof Error ? error.message : String(error);
+                return {
+                    content: [{ type: 'text' as const, text: `Error: ${message}` }],
+                    isError: true,
+                };
+            }
+        },
+    );
 }
 
 async function main() {

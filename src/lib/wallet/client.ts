@@ -2,6 +2,7 @@ import { x402Client, x402HTTPClient } from '@x402/core/client';
 import { ExactStellarScheme } from '@x402/stellar';
 import type { ClientStellarSigner } from '@x402/stellar';
 import type { Network } from '@x402/core/types';
+import { env } from '$env/dynamic/public';
 
 /**
  * Creates a fetch wrapper that handles x402 402 Payment Required responses.
@@ -9,7 +10,8 @@ import type { Network } from '@x402/core/types';
  * the wallet signer, and retries the request with the payment header.
  */
 export function createPaidFetch(signer: ClientStellarSigner, network: Network) {
-    const client = new x402Client().register(network, new ExactStellarScheme(signer));
+    const rpcConfig = env.PUBLIC_STELLAR_RPC_URL ? { url: env.PUBLIC_STELLAR_RPC_URL } : undefined;
+    const client = new x402Client().register(network, new ExactStellarScheme(signer, rpcConfig));
     const httpClient = new x402HTTPClient(client);
 
     return async (url: string, init?: RequestInit): Promise<Response> => {

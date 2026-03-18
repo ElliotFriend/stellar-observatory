@@ -1,4 +1,4 @@
-import type { NearEarthObjectsData } from '$lib/types/api.js';
+import type { NearEarthObjectsData } from '$lib/types/api';
 
 export function getDummyNearEarthObjectsData(): NearEarthObjectsData {
     return {

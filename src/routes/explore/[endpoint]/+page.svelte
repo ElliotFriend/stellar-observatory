@@ -2,7 +2,7 @@
     import PriceTag from '$lib/components/PriceTag.svelte';
     import DataViewer from '$lib/components/DataViewer.svelte';
     import PaymentResult from '$lib/components/PaymentResult.svelte';
-    import { getWalletState } from '$lib/wallet/store.svelte.js';
+    import { getWalletState } from '$lib/wallet/store.svelte';
     import { page } from '$app/stores';
     import type { PageData } from './$types';
 

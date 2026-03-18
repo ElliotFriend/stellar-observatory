@@ -1,8 +1,8 @@
 import { json } from '@sveltejs/kit';
 import type { RequestHandler } from './$types';
-import { getDummyDeepSkyCatalogData } from '$lib/data/deep-sky-catalog.js';
-import { NETWORK_COOKIE_NAME, getNetworkFromCookie, isTestnet } from '$lib/config/network.js';
-import type { DeepSkyCatalogData, DeepSkyObject } from '$lib/types/api.js';
+import { getDummyDeepSkyCatalogData } from '$lib/data/deep-sky-catalog';
+import { NETWORK_COOKIE_NAME, getNetworkFromCookie, isTestnet } from '$lib/config/network';
+import type { DeepSkyCatalogData, DeepSkyObject } from '$lib/types/api';
 
 const TYPE_MAP: Record<string, DeepSkyObject['type']> = {
     Galaxy: 'galaxy',

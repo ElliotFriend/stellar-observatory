@@ -2,7 +2,7 @@ import { describe, it, expect } from 'vitest';
 import {
     getDummyNearEarthObjectsData,
     getNearEarthObjectsPreview,
-} from '$lib/data/near-earth-objects.js';
+} from '$lib/data/near-earth-objects';
 
 describe('near earth objects data', () => {
     it('returns objects with required fields', () => {

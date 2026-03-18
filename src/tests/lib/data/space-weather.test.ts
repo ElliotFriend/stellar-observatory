@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { getDummySpaceWeatherData, getSpaceWeatherPreview } from '$lib/data/space-weather.js';
+import { getDummySpaceWeatherData, getSpaceWeatherPreview } from '$lib/data/space-weather';
 
 describe('space weather data', () => {
     it('returns valid solar wind data', () => {

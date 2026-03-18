@@ -1,8 +1,8 @@
 import { json } from '@sveltejs/kit';
 import type { RequestHandler } from './$types';
-import { getDummyNearEarthObjectsData } from '$lib/data/near-earth-objects.js';
-import { NETWORK_COOKIE_NAME, getNetworkFromCookie, isTestnet } from '$lib/config/network.js';
-import type { NearEarthObjectsData } from '$lib/types/api.js';
+import { getDummyNearEarthObjectsData } from '$lib/data/near-earth-objects';
+import { NETWORK_COOKIE_NAME, getNetworkFromCookie, isTestnet } from '$lib/config/network';
+import type { NearEarthObjectsData } from '$lib/types/api';
 
 async function fetchRealNearEarthObjectsData(): Promise<NearEarthObjectsData> {
     const res = await fetch(

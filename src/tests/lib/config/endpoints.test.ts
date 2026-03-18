@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { endpoints, getEndpointBySlug } from '$lib/config/endpoints.js';
+import { endpoints, getEndpointBySlug } from '$lib/config/endpoints';
 
 describe('endpoints config', () => {
     it('has 5 endpoints', () => {

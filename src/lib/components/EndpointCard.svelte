@@ -1,6 +1,6 @@
 <script lang="ts">
     import PriceTag from './PriceTag.svelte';
-    import type { EndpointConfig } from '$lib/types/api.js';
+    import type { EndpointConfig } from '$lib/types/api';
 
     let { endpoint, preview }: { endpoint: EndpointConfig; preview?: Record<string, unknown> } =
         $props();

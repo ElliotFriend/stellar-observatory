@@ -1,5 +1,5 @@
 import { error } from '@sveltejs/kit';
-import { getEndpointBySlug } from '$lib/config/endpoints.js';
+import { getEndpointBySlug } from '$lib/config/endpoints';
 import type { PageLoad } from './$types';
 
 export const load: PageLoad = ({ params }) => {

@@ -1,11 +1,11 @@
 <script lang="ts">
     import EndpointCard from '$lib/components/EndpointCard.svelte';
-    import { endpoints } from '$lib/config/endpoints.js';
-    import { getSpaceWeatherPreview } from '$lib/data/space-weather.js';
-    import { getNearEarthObjectsPreview } from '$lib/data/near-earth-objects.js';
-    import { getExoplanetsPreview } from '$lib/data/exoplanets.js';
-    import { getDeepSkyCatalogPreview } from '$lib/data/deep-sky-catalog.js';
-    import { getGravitationalWavesPreview } from '$lib/data/gravitational-waves.js';
+    import { endpoints } from '$lib/config/endpoints';
+    import { getSpaceWeatherPreview } from '$lib/data/space-weather';
+    import { getNearEarthObjectsPreview } from '$lib/data/near-earth-objects';
+    import { getExoplanetsPreview } from '$lib/data/exoplanets';
+    import { getDeepSkyCatalogPreview } from '$lib/data/deep-sky-catalog';
+    import { getGravitationalWavesPreview } from '$lib/data/gravitational-waves';
 
     const previews: Record<string, Record<string, unknown>> = {
         'space-weather': getSpaceWeatherPreview(),

@@ -1,6 +1,6 @@
 import { json } from '@sveltejs/kit';
 import type { RequestHandler } from './$types';
-import { NETWORK_COOKIE_NAME, type StellarNetwork } from '$lib/config/network.js';
+import { NETWORK_COOKIE_NAME, type StellarNetwork } from '$lib/config/network';
 
 const VALID_NETWORKS: StellarNetwork[] = ['stellar:testnet', 'stellar:pubnet'];
 

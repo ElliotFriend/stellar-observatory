@@ -1,4 +1,4 @@
-import type { EndpointConfig } from '$lib/types/api.js';
+import type { EndpointConfig } from '$lib/types/api';
 
 export const endpoints: EndpointConfig[] = [
     {

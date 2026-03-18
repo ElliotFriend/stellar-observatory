@@ -2,7 +2,7 @@
     import './layout.css';
     import Header from '$lib/components/Header.svelte';
     import StarField from '$lib/components/StarField.svelte';
-    import { getNetworkPassphrase, type StellarNetwork } from '$lib/config/network.js';
+    import { getNetworkPassphrase, type StellarNetwork } from '$lib/config/network';
     import { onMount } from 'svelte';
 
     let { children, data } = $props();

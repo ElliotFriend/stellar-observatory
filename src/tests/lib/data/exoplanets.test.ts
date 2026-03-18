@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { getDummyExoplanetsData, getExoplanetsPreview } from '$lib/data/exoplanets.js';
+import { getDummyExoplanetsData, getExoplanetsPreview } from '$lib/data/exoplanets';
 
 describe('exoplanets data', () => {
     it('returns planets with required fields', () => {

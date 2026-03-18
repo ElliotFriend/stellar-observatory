@@ -1,4 +1,4 @@
-import type { GravitationalWavesData } from '$lib/types/api.js';
+import type { GravitationalWavesData } from '$lib/types/api';
 
 export function getDummyGravitationalWavesData(): GravitationalWavesData {
     return {

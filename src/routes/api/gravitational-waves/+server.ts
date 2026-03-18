@@ -1,8 +1,8 @@
 import { json } from '@sveltejs/kit';
 import type { RequestHandler } from './$types';
-import { getDummyGravitationalWavesData } from '$lib/data/gravitational-waves.js';
-import { NETWORK_COOKIE_NAME, getNetworkFromCookie, isTestnet } from '$lib/config/network.js';
-import type { GravitationalWavesData, GravitationalWaveEvent } from '$lib/types/api.js';
+import { getDummyGravitationalWavesData } from '$lib/data/gravitational-waves';
+import { NETWORK_COOKIE_NAME, getNetworkFromCookie, isTestnet } from '$lib/config/network';
+import type { GravitationalWavesData, GravitationalWaveEvent } from '$lib/types/api';
 
 const SOURCE_MAP: Record<string, GravitationalWaveEvent['source']> = {
     BBH: 'binary-black-hole',

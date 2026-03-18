@@ -1,4 +1,4 @@
-import type { ExoplanetsData } from '$lib/types/api.js';
+import type { ExoplanetsData } from '$lib/types/api';
 
 export function getDummyExoplanetsData(): ExoplanetsData {
     return {

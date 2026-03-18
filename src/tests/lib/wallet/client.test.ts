@@ -24,7 +24,7 @@ vi.mock('@x402/stellar', () => ({
     ExactStellarScheme: vi.fn(),
 }));
 
-import { createPaidFetch } from '$lib/wallet/client.js';
+import { createPaidFetch } from '$lib/wallet/client';
 import type { ClientStellarSigner } from '@x402/stellar';
 
 describe('createPaidFetch', () => {

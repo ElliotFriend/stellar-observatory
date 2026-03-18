@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { getWalletState, connectWallet, disconnectWallet } from '$lib/wallet/store.svelte.js';
+    import { getWalletState, connectWallet, disconnectWallet } from '$lib/wallet/store.svelte';
     import type { Network } from '@x402/core/types';
 
     let { network, networkPassphrase }: { network: Network; networkPassphrase: string } = $props();

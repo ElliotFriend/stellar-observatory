@@ -24,8 +24,8 @@ vi.mock('@x402/stellar', () => ({
     ExactStellarScheme: vi.fn(),
 }));
 
-import { createPaidFetch } from '$lib/wallet/client.js';
-import { endpoints } from '$lib/config/endpoints.js';
+import { createPaidFetch } from '$lib/wallet/client';
+import { endpoints } from '$lib/config/endpoints';
 
 describe('payment flow integration', () => {
     beforeEach(() => {

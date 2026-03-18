@@ -1,8 +1,8 @@
 import { json } from '@sveltejs/kit';
 import type { RequestHandler } from './$types';
-import { getDummySpaceWeatherData } from '$lib/data/space-weather.js';
-import { NETWORK_COOKIE_NAME, getNetworkFromCookie, isTestnet } from '$lib/config/network.js';
-import type { SpaceWeatherData } from '$lib/types/api.js';
+import { getDummySpaceWeatherData } from '$lib/data/space-weather';
+import { NETWORK_COOKIE_NAME, getNetworkFromCookie, isTestnet } from '$lib/config/network';
+import type { SpaceWeatherData } from '$lib/types/api';
 
 async function fetchRealSpaceWeatherData(): Promise<SpaceWeatherData> {
     const [windRes, magRes, kpRes, flareRes] = await Promise.all([

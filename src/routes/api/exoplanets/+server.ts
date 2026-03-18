@@ -1,8 +1,8 @@
 import { json } from '@sveltejs/kit';
 import type { RequestHandler } from './$types';
-import { getDummyExoplanetsData } from '$lib/data/exoplanets.js';
-import { NETWORK_COOKIE_NAME, getNetworkFromCookie, isTestnet } from '$lib/config/network.js';
-import type { ExoplanetsData } from '$lib/types/api.js';
+import { getDummyExoplanetsData } from '$lib/data/exoplanets';
+import { NETWORK_COOKIE_NAME, getNetworkFromCookie, isTestnet } from '$lib/config/network';
+import type { ExoplanetsData } from '$lib/types/api';
 
 async function fetchRealExoplanetsData(): Promise<ExoplanetsData> {
     const query = encodeURIComponent(

@@ -1,4 +1,4 @@
-import type { SpaceWeatherData } from '$lib/types/api.js';
+import type { SpaceWeatherData } from '$lib/types/api';
 
 export function getDummySpaceWeatherData(): SpaceWeatherData {
     return {

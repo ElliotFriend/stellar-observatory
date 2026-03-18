@@ -2,7 +2,7 @@ import { describe, it, expect } from 'vitest';
 import {
     getDummyGravitationalWavesData,
     getGravitationalWavesPreview,
-} from '$lib/data/gravitational-waves.js';
+} from '$lib/data/gravitational-waves';
 
 describe('gravitational waves data', () => {
     it('returns events with required fields', () => {

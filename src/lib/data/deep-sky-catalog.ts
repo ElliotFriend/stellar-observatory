@@ -1,4 +1,4 @@
-import type { DeepSkyCatalogData } from '$lib/types/api.js';
+import type { DeepSkyCatalogData } from '$lib/types/api';
 
 export function getDummyDeepSkyCatalogData(): DeepSkyCatalogData {
     return {

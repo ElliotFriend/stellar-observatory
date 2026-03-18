@@ -10,7 +10,7 @@ vi.mock('@creit-tech/stellar-wallets-kit', () => ({
     },
 }));
 
-import { createWalletKitSigner } from '$lib/wallet/adapter.js';
+import { createWalletKitSigner } from '$lib/wallet/adapter';
 
 describe('createWalletKitSigner', () => {
     const address = 'GABC123';

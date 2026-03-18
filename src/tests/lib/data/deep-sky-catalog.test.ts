@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { getDummyDeepSkyCatalogData, getDeepSkyCatalogPreview } from '$lib/data/deep-sky-catalog.js';
+import { getDummyDeepSkyCatalogData, getDeepSkyCatalogPreview } from '$lib/data/deep-sky-catalog';
 
 describe('deep sky catalog data', () => {
     it('returns objects with required fields', () => {

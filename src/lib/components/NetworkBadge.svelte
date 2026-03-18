@@ -1,13 +1,12 @@
 <script lang="ts">
     import { disconnectWallet } from '$lib/wallet/store.svelte';
+    import { page } from '$app/state';
 
-    let { network }: { network: string } = $props();
-
+    let { network } = $derived(page.data);
+    let switching = $state(false);
     const isTestnet = $derived(network.includes('testnet'));
     const label = $derived(isTestnet ? 'Testnet' : 'Mainnet');
     const oppositeNetwork = $derived(isTestnet ? 'stellar:pubnet' : 'stellar:testnet');
-
-    let switching = $state(false);
 
     async function toggleNetwork() {
         if (switching) return;

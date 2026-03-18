@@ -1,14 +1,14 @@
 <script lang="ts">
-    import './layout.css';
+    import { onMount } from 'svelte';
+    import type { LayoutProps } from './$types';
+
     import Header from '$lib/components/Header.svelte';
     import StarField from '$lib/components/StarField.svelte';
-    import { getNetworkPassphrase, type StellarNetwork } from '$lib/config/network';
-    import { onMount } from 'svelte';
 
-    let { children, data } = $props();
+    import './layout.css';
 
-    const network = $derived(data.network as StellarNetwork);
-    const networkPassphrase = $derived(getNetworkPassphrase(network));
+    let { children, data }: LayoutProps = $props();
+    const { network } = $derived(data);
 
     onMount(async () => {
         const { StellarWalletsKit } = await import('@creit-tech/stellar-wallets-kit');
@@ -31,7 +31,7 @@
 <StarField />
 
 <div class="relative flex min-h-screen flex-col">
-    <Header {network} {networkPassphrase} />
+    <Header />
     <main class="flex-1">
         {@render children()}
     </main>

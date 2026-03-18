@@ -1,3 +1,5 @@
+import type { StellarNetwork } from '$lib/config/network';
+
 // See https://svelte.dev/docs/kit/types#app.d.ts
 // for information about these interfaces
 declare global {
@@ -6,7 +8,9 @@ declare global {
         interface Locals {
             x402?: Record<string, unknown>;
         }
-        // interface PageData {}
+        interface PageData {
+            network: StellarNetwork;
+        }
         // interface PageState {}
         // interface Platform {}
     }

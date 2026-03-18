@@ -1,10 +1,8 @@
 <script lang="ts">
-    import WalletButton from './WalletButton.svelte';
-    import NetworkBadge from './NetworkBadge.svelte';
     import { resolve } from '$app/paths';
-    import type { Network } from '@x402/core/types';
 
-    let { network, networkPassphrase }: { network: Network; networkPassphrase: string } = $props();
+    import WalletButton from '$lib/components/WalletButton.svelte';
+    import NetworkBadge from '$lib/components/NetworkBadge.svelte';
 </script>
 
 <header class="sticky top-0 z-50 border-b border-space-600/50 bg-space-900/80 backdrop-blur-md">
@@ -18,8 +16,8 @@
         </a>
 
         <div class="flex items-center gap-3">
-            <NetworkBadge {network} />
-            <WalletButton {network} {networkPassphrase} />
+            <NetworkBadge />
+            <WalletButton />
         </div>
     </div>
 </header>

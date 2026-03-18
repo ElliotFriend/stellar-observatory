@@ -3,7 +3,11 @@ import { ExactStellarScheme } from '@x402/stellar';
 import { createEd25519Signer } from '@x402/stellar';
 import type { Network } from '@x402/core/types';
 
-export function createMcpX402Client(secretKey: string, network: Network, rpcUrl?: string): x402HTTPClient {
+export function createMcpX402Client(
+    secretKey: string,
+    network: Network,
+    rpcUrl?: string,
+): x402HTTPClient {
     const signer = createEd25519Signer(secretKey, network);
     const rpcConfig = rpcUrl ? { url: rpcUrl } : undefined;
     const client = new x402Client().register(network, new ExactStellarScheme(signer, rpcConfig));

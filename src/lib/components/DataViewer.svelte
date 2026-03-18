@@ -1,13 +1,11 @@
 <script lang="ts">
-    let {
-        data,
-        loading = false,
-        error = null,
-    }: {
+    interface Props {
         data: unknown;
         loading?: boolean;
         error?: string | null;
-    } = $props();
+    }
+
+    let { data, loading = false, error = null }: Props = $props();
 </script>
 
 <div class="rounded-xl border border-space-600/50 bg-space-800/80 p-6 backdrop-blur-sm">

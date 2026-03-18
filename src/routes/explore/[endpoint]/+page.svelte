@@ -1,22 +1,21 @@
 <script lang="ts">
+    import { resolve } from '$app/paths';
+    import { getWalletState } from '$lib/wallet/store.svelte';
+    import type { PageProps } from './$types';
+
     import PriceTag from '$lib/components/PriceTag.svelte';
     import DataViewer from '$lib/components/DataViewer.svelte';
     import PaymentResult from '$lib/components/PaymentResult.svelte';
-    import { getWalletState } from '$lib/wallet/store.svelte';
-    import { page } from '$app/stores';
-    import type { PageData } from './$types';
-    import { resolve } from '$app/paths';
 
-    let { data }: { data: PageData } = $props();
-    const endpoint = $derived(data.endpoint);
+    let { data }: PageProps = $props();
 
     const wallet = getWalletState();
-    const network = $derived($page.data.network ?? 'stellar:testnet');
 
-    let responseData = $state<unknown>(null);
-    let loading = $state(false);
-    let fetchError = $state<string | null>(null);
-    let txHash = $state<string | null>(null);
+    let { endpoint } = $derived(data);
+    let responseData: unknown = $state(null);
+    let loading: boolean = $state(false);
+    let fetchError: string | null = $state(null);
+    let txHash: string | null = $state(null);
 
     async function fetchData() {
         if (!wallet.paidFetch) {
@@ -35,11 +34,11 @@
                 throw new Error(`Request failed: ${res.status} ${res.statusText}`);
             }
 
-            const settleHeader = res.headers.get('x-payment-response');
+            const settleHeader = res.headers.get('payment-response');
             if (settleHeader) {
                 try {
                     const settle = JSON.parse(atob(settleHeader));
-                    txHash = settle.txHash ?? null;
+                    txHash = settle.transaction ?? null;
                 } catch {
                     // Settle header parse failed, not critical
                 }
@@ -108,7 +107,7 @@
         {/if}
     </div>
 
-    <PaymentResult {txHash} {network} />
+    <PaymentResult {txHash} />
 
     <div class="mt-4">
         <DataViewer data={responseData} {loading} error={fetchError} />

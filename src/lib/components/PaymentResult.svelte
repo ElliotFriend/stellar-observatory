@@ -1,5 +1,8 @@
 <script lang="ts">
-    let { txHash = null, network }: { txHash?: string | null; network: string } = $props();
+    import { page } from '$app/state';
+
+    let { network } = $derived(page.data);
+    let { txHash = null }: { txHash?: string | null } = $props();
 
     const explorerBase = $derived(
         network.includes('testnet')

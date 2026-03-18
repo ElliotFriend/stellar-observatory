@@ -4,8 +4,10 @@ import type { PageLoad } from './$types';
 
 export const load: PageLoad = ({ params }) => {
     const endpoint = getEndpointBySlug(params.endpoint);
+
     if (!endpoint) {
         error(404, { message: `Endpoint "${params.endpoint}" not found` });
     }
+
     return { endpoint };
 };

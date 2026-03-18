@@ -1,9 +1,11 @@
 <script lang="ts">
+    import { page } from '$app/state';
+
     import { getWalletState, connectWallet, disconnectWallet } from '$lib/wallet/store.svelte';
-    import type { Network } from '@x402/core/types';
+    import { getNetworkPassphrase } from '$lib/config/network';
 
-    let { network, networkPassphrase }: { network: Network; networkPassphrase: string } = $props();
-
+    let { network } = $derived(page.data);
+    let networkPassphrase = $derived(getNetworkPassphrase(network));
     const wallet = getWalletState();
 
     function handleClick() {

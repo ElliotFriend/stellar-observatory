@@ -38,10 +38,9 @@ describe('MCP x402 client', () => {
 
         createMcpX402Client('STEST123', 'stellar:pubnet', 'https://rpc.example.com');
 
-        expect(ExactStellarScheme).toHaveBeenCalledWith(
-            expect.anything(),
-            { url: 'https://rpc.example.com' },
-        );
+        expect(ExactStellarScheme).toHaveBeenCalledWith(expect.anything(), {
+            url: 'https://rpc.example.com',
+        });
     });
 
     it('createMcpX402Client passes undefined rpcConfig when no rpcUrl provided', async () => {

@@ -1,19 +1,10 @@
 <script lang="ts">
-    import EndpointCard from '$lib/components/EndpointCard.svelte';
     import { endpoints } from '$lib/config/endpoints';
-    import { getSpaceWeatherPreview } from '$lib/data/space-weather';
-    import { getNearEarthObjectsPreview } from '$lib/data/near-earth-objects';
-    import { getExoplanetsPreview } from '$lib/data/exoplanets';
-    import { getDeepSkyCatalogPreview } from '$lib/data/deep-sky-catalog';
-    import { getGravitationalWavesPreview } from '$lib/data/gravitational-waves';
+    import type { PageProps } from './$types';
 
-    const previews: Record<string, Record<string, unknown>> = {
-        'space-weather': getSpaceWeatherPreview(),
-        'near-earth-objects': getNearEarthObjectsPreview(),
-        exoplanets: getExoplanetsPreview(),
-        'deep-sky-catalog': getDeepSkyCatalogPreview(),
-        'gravitational-waves': getGravitationalWavesPreview(),
-    };
+    import EndpointCard from '$lib/components/EndpointCard.svelte';
+
+    let { data }: PageProps = $props();
 </script>
 
 <div class="mx-auto max-w-6xl px-4 py-12">
@@ -27,7 +18,7 @@
 
     <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {#each endpoints as endpoint (endpoint.slug)}
-            <EndpointCard {endpoint} preview={previews[endpoint.slug]} />
+            <EndpointCard {endpoint} preview={data.previews[endpoint.slug]} />
         {/each}
     </div>
 

@@ -32,6 +32,27 @@ describe('MCP x402 client', () => {
         expect(typeof client.getPaymentRequiredResponse).toBe('function');
     });
 
+    it('createMcpX402Client passes rpcUrl config to ExactStellarScheme', async () => {
+        const { ExactStellarScheme } = await import('@x402/stellar');
+        vi.mocked(ExactStellarScheme).mockClear();
+
+        createMcpX402Client('STEST123', 'stellar:pubnet', 'https://rpc.example.com');
+
+        expect(ExactStellarScheme).toHaveBeenCalledWith(
+            expect.anything(),
+            { url: 'https://rpc.example.com' },
+        );
+    });
+
+    it('createMcpX402Client passes undefined rpcConfig when no rpcUrl provided', async () => {
+        const { ExactStellarScheme } = await import('@x402/stellar');
+        vi.mocked(ExactStellarScheme).mockClear();
+
+        createMcpX402Client('STEST123', 'stellar:testnet');
+
+        expect(ExactStellarScheme).toHaveBeenCalledWith(expect.anything(), undefined);
+    });
+
     describe('paidFetch', () => {
         beforeEach(() => {
             vi.clearAllMocks();

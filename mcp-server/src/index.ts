@@ -8,13 +8,14 @@ import type { Network } from '@x402/core/types';
 const secretKey = process.env.STELLAR_SECRET_KEY;
 const baseUrl = process.env.OBSERVATORY_BASE_URL ?? 'http://localhost:5173';
 const network = (process.env.STELLAR_NETWORK ?? 'stellar:testnet') as Network;
+const rpcUrl = process.env.STELLAR_RPC_URL;
 
 if (!secretKey) {
     console.error('STELLAR_SECRET_KEY environment variable is required');
     process.exit(1);
 }
 
-const httpClient = createMcpX402Client(secretKey, network);
+const httpClient = createMcpX402Client(secretKey, network, rpcUrl);
 
 const server = new McpServer({
     name: 'stellar-observatory',

@@ -9,7 +9,7 @@
             "command": "node",
             "args": ["./mcp-server/build/index.js"],
             "env": {
-                "STELLAR_SECRET_KEY": "",
+                "STELLAR_SECRET_KEY": "<your-stellar-secret-key>",
                 "OBSERVATORY_BASE_URL": "http://localhost:5173",
                 "STELLAR_NETWORK": "stellar:testnet"
             }

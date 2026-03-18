@@ -7,6 +7,7 @@ node_modules
 .wrangler
 /.svelte-kit
 /build
+/mcp-server/build
 
 # OS
 .DS_Store
@@ -17,6 +18,9 @@ Thumbs.db
 .env.*
 !.env.example
 !.env.test
+
+# MCP
+.mcp.json
 
 # Vite
 vite.config.js.timestamp-*

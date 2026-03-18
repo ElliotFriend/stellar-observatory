@@ -37,7 +37,7 @@ export const endpoints: EndpointConfig[] = [
         slug: 'gravitational-waves',
         path: '/api/gravitational-waves',
         price: '$0.025',
-        description: 'Mock LIGO/Virgo gravitational wave detection events',
+        description: 'LIGO/Virgo gravitational wave detection events',
         previewDescription: 'Latest detection event and signal strength',
         icon: '🌊',
     },

@@ -5,6 +5,7 @@
     import { getWalletState } from '$lib/wallet/store.svelte';
     import { page } from '$app/stores';
     import type { PageData } from './$types';
+    import { resolve } from '$app/paths';
 
     let { data }: { data: PageData } = $props();
     const endpoint = $derived(data.endpoint);
@@ -55,7 +56,7 @@
 
 <div class="mx-auto max-w-4xl px-4 py-12">
     <a
-        href="/"
+        href={resolve('/')}
         class="mb-6 inline-flex items-center text-sm text-slate-400 transition-colors hover:text-nebula-400"
     >
         &larr; Back to all endpoints

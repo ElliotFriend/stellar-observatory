@@ -45,7 +45,6 @@
     "dependencies": {
         "@creit-tech/stellar-wallets-kit": "jsr:^2.0.1",
         "@x402/core": "^2.7.0",
-        "@x402/evm": "^2.7.0",
         "@x402/stellar": "^2.7.0",
         "x402-sveltekit": "^0.1.8"
     }

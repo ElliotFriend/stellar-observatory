@@ -1,12 +1,12 @@
 import { describe, it, expect } from 'vitest';
 import {
-    getNearEarthObjectsData,
+    getDummyNearEarthObjectsData,
     getNearEarthObjectsPreview,
 } from '$lib/data/near-earth-objects.js';
 
 describe('near earth objects data', () => {
     it('returns objects with required fields', () => {
-        const data = getNearEarthObjectsData();
+        const data = getDummyNearEarthObjectsData();
         expect(data.objects.length).toBeGreaterThan(0);
         expect(data.count).toBe(data.objects.length);
         for (const obj of data.objects) {
@@ -21,7 +21,7 @@ describe('near earth objects data', () => {
     });
 
     it('has a valid query period', () => {
-        const data = getNearEarthObjectsData();
+        const data = getDummyNearEarthObjectsData();
         const start = new Date(data.queryPeriod.start);
         const end = new Date(data.queryPeriod.end);
         expect(end.getTime()).toBeGreaterThan(start.getTime());

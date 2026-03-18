@@ -1,6 +1,6 @@
 import type { SpaceWeatherData } from '$lib/types/api.js';
 
-export function getSpaceWeatherData(): SpaceWeatherData {
+export function getDummySpaceWeatherData(): SpaceWeatherData {
     return {
         solarWind: {
             speed: 423.7,
@@ -64,7 +64,7 @@ export function getSpaceWeatherData(): SpaceWeatherData {
 }
 
 export function getSpaceWeatherPreview() {
-    const data = getSpaceWeatherData();
+    const data = getDummySpaceWeatherData();
     return {
         solarWindSpeed: data.solarWind.speed,
         activeStorms: data.geomagneticStorms.length,

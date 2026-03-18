@@ -1,12 +1,12 @@
 import { describe, it, expect } from 'vitest';
 import {
-    getGravitationalWavesData,
+    getDummyGravitationalWavesData,
     getGravitationalWavesPreview,
 } from '$lib/data/gravitational-waves.js';
 
 describe('gravitational waves data', () => {
     it('returns events with required fields', () => {
-        const data = getGravitationalWavesData();
+        const data = getDummyGravitationalWavesData();
         expect(data.events.length).toBeGreaterThan(0);
         expect(data.count).toBe(data.events.length);
         expect(data.observingRun).toBeTruthy();

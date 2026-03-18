@@ -1,6 +1,6 @@
 import type { DeepSkyCatalogData } from '$lib/types/api.js';
 
-export function getDeepSkyCatalogData(): DeepSkyCatalogData {
+export function getDummyDeepSkyCatalogData(): DeepSkyCatalogData {
     return {
         objects: [
             {
@@ -95,7 +95,7 @@ export function getDeepSkyCatalogData(): DeepSkyCatalogData {
 }
 
 export function getDeepSkyCatalogPreview() {
-    const data = getDeepSkyCatalogData();
+    const data = getDummyDeepSkyCatalogData();
     const featured = data.objects[0];
     return {
         totalObjects: data.count,

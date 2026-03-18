@@ -2,14 +2,13 @@
     import './layout.css';
     import Header from '$lib/components/Header.svelte';
     import StarField from '$lib/components/StarField.svelte';
-    import { env } from '$env/dynamic/public';
     import { getNetworkPassphrase, type StellarNetwork } from '$lib/config/network.js';
     import { onMount } from 'svelte';
 
-    let { children } = $props();
+    let { children, data } = $props();
 
-    const network = (env.PUBLIC_STELLAR_NETWORK ?? 'stellar:testnet') as StellarNetwork;
-    const networkPassphrase = getNetworkPassphrase(network);
+    const network = $derived(data.network as StellarNetwork);
+    const networkPassphrase = $derived(getNetworkPassphrase(network));
 
     onMount(async () => {
         const { StellarWalletsKit } = await import('@creit-tech/stellar-wallets-kit');

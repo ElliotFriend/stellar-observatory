@@ -1,6 +1,6 @@
 import type { NearEarthObjectsData } from '$lib/types/api.js';
 
-export function getNearEarthObjectsData(): NearEarthObjectsData {
+export function getDummyNearEarthObjectsData(): NearEarthObjectsData {
     return {
         objects: [
             {
@@ -66,7 +66,7 @@ export function getNearEarthObjectsData(): NearEarthObjectsData {
 }
 
 export function getNearEarthObjectsPreview() {
-    const data = getNearEarthObjectsData();
+    const data = getDummyNearEarthObjectsData();
     const closest = data.objects.reduce((a, b) =>
         a.missDistance.astronomical < b.missDistance.astronomical ? a : b,
     );

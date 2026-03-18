@@ -1,9 +1,9 @@
 import { describe, it, expect } from 'vitest';
-import { getExoplanetsData, getExoplanetsPreview } from '$lib/data/exoplanets.js';
+import { getDummyExoplanetsData, getExoplanetsPreview } from '$lib/data/exoplanets.js';
 
 describe('exoplanets data', () => {
     it('returns planets with required fields', () => {
-        const data = getExoplanetsData();
+        const data = getDummyExoplanetsData();
         expect(data.planets.length).toBeGreaterThan(0);
         expect(data.count).toBe(data.planets.length);
         for (const planet of data.planets) {

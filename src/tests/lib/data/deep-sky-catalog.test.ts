@@ -1,9 +1,9 @@
 import { describe, it, expect } from 'vitest';
-import { getDeepSkyCatalogData, getDeepSkyCatalogPreview } from '$lib/data/deep-sky-catalog.js';
+import { getDummyDeepSkyCatalogData, getDeepSkyCatalogPreview } from '$lib/data/deep-sky-catalog.js';
 
 describe('deep sky catalog data', () => {
     it('returns objects with required fields', () => {
-        const data = getDeepSkyCatalogData();
+        const data = getDummyDeepSkyCatalogData();
         expect(data.objects.length).toBeGreaterThan(0);
         expect(data.count).toBe(data.objects.length);
         for (const obj of data.objects) {

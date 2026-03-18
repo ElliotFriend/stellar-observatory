@@ -1,6 +1,6 @@
 import type { GravitationalWavesData } from '$lib/types/api.js';
 
-export function getGravitationalWavesData(): GravitationalWavesData {
+export function getDummyGravitationalWavesData(): GravitationalWavesData {
     return {
         events: [
             {
@@ -59,7 +59,7 @@ export function getGravitationalWavesData(): GravitationalWavesData {
 }
 
 export function getGravitationalWavesPreview() {
-    const data = getGravitationalWavesData();
+    const data = getDummyGravitationalWavesData();
     const latest = data.events[0];
     return {
         totalEvents: data.count,

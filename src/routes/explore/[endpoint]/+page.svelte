@@ -3,14 +3,14 @@
     import DataViewer from '$lib/components/DataViewer.svelte';
     import PaymentResult from '$lib/components/PaymentResult.svelte';
     import { getWalletState } from '$lib/wallet/store.svelte.js';
-    import { env } from '$env/dynamic/public';
+    import { page } from '$app/stores';
     import type { PageData } from './$types';
 
     let { data }: { data: PageData } = $props();
     const endpoint = $derived(data.endpoint);
 
     const wallet = getWalletState();
-    const network = env.PUBLIC_STELLAR_NETWORK ?? 'stellar:testnet';
+    const network = $derived($page.data.network ?? 'stellar:testnet');
 
     let responseData = $state<unknown>(null);
     let loading = $state(false);

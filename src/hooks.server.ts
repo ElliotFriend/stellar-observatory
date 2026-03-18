@@ -3,10 +3,9 @@ import { paymentHookFromConfig } from 'x402-sveltekit';
 import { ExactStellarScheme } from '@x402/stellar/exact/server';
 import type { Network } from '@x402/core/types';
 import { env } from '$env/dynamic/private';
-import { env as publicEnv } from '$env/dynamic/public';
 import { endpoints } from '$lib/config/endpoints.js';
+import { NETWORK_COOKIE_NAME, getNetworkFromCookie } from '$lib/config/network.js';
 
-const network = (publicEnv.PUBLIC_STELLAR_NETWORK ?? 'stellar:testnet') as Network;
 const payTo = env.PAYTO_ADDRESS ?? 'GDNB6ZWJ4HV5EMJYPJNTHTEMUJVFOHZX6VJE34KZGWKF4UQDJ7UCEQIO';
 const facilitatorUrl = env.FACILITATOR_URL ?? 'https://x402.org/facilitator';
 
@@ -14,7 +13,10 @@ const routes = Object.fromEntries(
     endpoints.map((ep) => [
         `GET ${ep.path}`,
         {
-            accepts: [{ scheme: 'exact' as const, network, payTo, price: ep.price }],
+            accepts: (event: { cookies: { get: (name: string) => string | undefined } }) => {
+                const network = getNetworkFromCookie(event.cookies.get(NETWORK_COOKIE_NAME)) as Network;
+                return [{ scheme: 'exact' as const, network, payTo, price: ep.price }];
+            },
             description: ep.description,
         },
     ]),

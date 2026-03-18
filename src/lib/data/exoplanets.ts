@@ -1,6 +1,6 @@
 import type { ExoplanetsData } from '$lib/types/api.js';
 
-export function getExoplanetsData(): ExoplanetsData {
+export function getDummyExoplanetsData(): ExoplanetsData {
     return {
         planets: [
             {
@@ -94,7 +94,7 @@ export function getExoplanetsData(): ExoplanetsData {
 }
 
 export function getExoplanetsPreview() {
-    const data = getExoplanetsData();
+    const data = getDummyExoplanetsData();
     const topHabitable = data.planets.reduce((a, b) =>
         a.habitabilityScore > b.habitabilityScore ? a : b,
     );

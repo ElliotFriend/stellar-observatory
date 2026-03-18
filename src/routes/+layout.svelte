@@ -1,6 +1,5 @@
 <script lang="ts">
     import './layout.css';
-    import favicon from '$lib/assets/favicon.svg';
     import Header from '$lib/components/Header.svelte';
     import StarField from '$lib/components/StarField.svelte';
     import { env } from '$env/dynamic/public';
@@ -26,7 +25,7 @@
 </script>
 
 <svelte:head>
-    <link rel="icon" href={favicon} />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <title>Stellar Observatory - x402 Payment Demo</title>
 </svelte:head>
 

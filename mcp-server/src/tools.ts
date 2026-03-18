@@ -79,7 +79,7 @@ export const tools: ToolDefinition[] = [
         handler: async (
             args: Record<string, unknown>,
             httpClient: x402HTTPClient,
-            _baseUrl: string,
+            _baseUrl: string, // eslint-disable-line @typescript-eslint/no-unused-vars
         ) => {
             const url = args.url as string;
             const method = (args.method as string) ?? 'GET';

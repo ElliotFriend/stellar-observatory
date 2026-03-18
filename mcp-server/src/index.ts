@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
-import { tools, getToolByName } from './tools.js';
+import { tools } from './tools.js';
 import { createMcpX402Client } from './x402-client.js';
 import type { Network } from '@x402/core/types';
 

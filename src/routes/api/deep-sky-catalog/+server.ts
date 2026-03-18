@@ -22,7 +22,6 @@ async function fetchRealDeepSkyCatalogData(): Promise<DeepSkyCatalogData> {
     );
     const raw = await res.json();
 
-    const currentMonth = new Date().toLocaleString('en', { month: 'long' });
     const monthIndex = new Date().getMonth();
     const bestMonths = [
         new Date(2025, monthIndex, 1).toLocaleString('en', { month: 'long' }),

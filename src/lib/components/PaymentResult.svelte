@@ -15,7 +15,7 @@
             Tx: <a
                 href="{explorerBase}{txHash}"
                 target="_blank"
-                rel="noopener noreferrer"
+                rel="external noopener noreferrer"
                 class="text-stellar-400 hover:underline"
             >
                 {txHash.slice(0, 8)}...{txHash.slice(-8)}

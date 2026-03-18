@@ -1,13 +1,14 @@
 <script lang="ts">
     import PriceTag from './PriceTag.svelte';
     import type { EndpointConfig } from '$lib/types/api';
+    import { resolve } from '$app/paths';
 
     let { endpoint, preview }: { endpoint: EndpointConfig; preview?: Record<string, unknown> } =
         $props();
 </script>
 
 <a
-    href="/explore/{endpoint.slug}"
+    href={resolve('/explore/[endpoint]', { endpoint: endpoint.slug })}
     class="group relative block rounded-xl border border-space-600/50 bg-space-800/80 p-6 backdrop-blur-sm transition-all hover:border-nebula-500/50 hover:shadow-lg hover:shadow-nebula-500/10"
 >
     <div class="mb-3 flex items-center justify-between">
@@ -30,7 +31,7 @@
         <div class="rounded-lg bg-space-900/60 p-3 text-xs">
             <p class="mb-1 font-medium text-stellar-400">Preview</p>
             <div class="space-y-1 text-slate-400">
-                {#each Object.entries(preview) as [key, value]}
+                {#each Object.entries(preview) as [key, value] (key)}
                     <div class="flex justify-between">
                         <span class="text-slate-500">{key.replace(/([A-Z])/g, ' $1').trim()}</span>
                         <span class="text-slate-300"

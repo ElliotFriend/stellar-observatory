@@ -31,16 +31,18 @@ async function fetchRealGravitationalWavesData(): Promise<GravitationalWavesData
             const mass1 = Number(params.mass_1_source) || 30;
             const mass2 = Number(params.mass_2_source) || mass1 * massRatio;
 
-            let source: GravitationalWaveEvent['source'] = 'unknown';
             const cat = (d.catalog_shortname as string) || '';
+            let source: GravitationalWaveEvent['source'];
             if (SOURCE_MAP[cat]) {
                 source = SOURCE_MAP[cat];
             } else if (mass1 > 3 && mass2 > 3) {
                 source = 'binary-black-hole';
             } else if (mass1 < 3 && mass2 < 3) {
                 source = 'binary-neutron-star';
-            } else {
+            } else if (mass1 > 3 || mass2 > 3) {
                 source = 'neutron-star-black-hole';
+            } else {
+                source = 'unknown';
             }
 
             const detectors: string[] = [];

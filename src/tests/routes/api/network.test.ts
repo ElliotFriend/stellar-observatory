@@ -19,7 +19,7 @@ describe('POST /api/network', () => {
         const store: Record<string, string> = {};
         return {
             get: (name: string) => store[name],
-            set: (name: string, value: string, opts?: Record<string, unknown>) => {
+            set: (name: string, value: string) => {
                 store[name] = value;
             },
             _store: store,

@@ -23,6 +23,9 @@ pnpm install
 # Set up environment
 cp .env.example .env
 
+# Copy and modify the Svelte MCP server, if desired
+cp .mcp.json.example .mcp.json
+
 # Start dev server
 pnpm dev
 ```
@@ -93,13 +96,13 @@ An [MCP](https://modelcontextprotocol.io) server lets AI agents (Claude, etc.) a
 
 ```bash
 # Build the MCP server
-cd mcp-server && pnpm install && pnpm build
+cd mcp-server && pnpm install && pnpm build && cd ..
+
+# Modify the `stellar-observatory` MCP server in `.mcp.json` with your secret key
+# Note: the account should be funded, and have a USDC trustline and balance.
 
 # Add to Claude Code
 claude mcp add -s user \
-  -e STELLAR_SECRET_KEY=S... \
-  -e OBSERVATORY_BASE_URL=http://localhost:5173 \
-  -e STELLAR_NETWORK=stellar:testnet \
   stellar-observatory -- node ./mcp-server/build/index.js
 ```
 

@@ -16,32 +16,32 @@ const endpointTools: Array<{ name: string; slug: string; price: string; descript
     {
         name: 'get-space-weather',
         slug: 'space-weather',
-        price: '$0.001',
+        price: '$0.0001',
         description:
             'Fetch space weather data including solar wind, geomagnetic storms, solar flares, and aurora forecast',
     },
     {
         name: 'get-near-earth-objects',
         slug: 'near-earth-objects',
-        price: '$0.01',
+        price: '$0.001',
         description: 'Fetch near-Earth object tracking data for approaching asteroids and comets',
     },
     {
         name: 'get-exoplanets',
         slug: 'exoplanets',
-        price: '$0.05',
+        price: '$0.005',
         description: 'Fetch confirmed exoplanet database with habitability scores',
     },
     {
         name: 'get-deep-sky-catalog',
         slug: 'deep-sky-catalog',
-        price: '$0.10',
+        price: '$0.01',
         description: 'Fetch deep sky object catalog including galaxies, nebulae, and clusters',
     },
     {
         name: 'get-gravitational-waves',
         slug: 'gravitational-waves',
-        price: '$0.25',
+        price: '$0.025',
         description: 'Fetch LIGO/Virgo gravitational wave detection events',
     },
 ];

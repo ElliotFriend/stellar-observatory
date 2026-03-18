@@ -32,7 +32,7 @@ describe('endpoints config', () => {
         const result = getEndpointBySlug('exoplanets');
         expect(result).toBeDefined();
         expect(result!.slug).toBe('exoplanets');
-        expect(result!.price).toBe('$0.05');
+        expect(result!.price).toBe('$0.005');
     });
 
     it('getEndpointBySlug returns undefined for unknown slug', () => {

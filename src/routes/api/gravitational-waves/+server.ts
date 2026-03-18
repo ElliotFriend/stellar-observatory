@@ -25,7 +25,7 @@ async function fetchRealGravitationalWavesData(): Promise<GravitationalWavesData
             const chirpMass = Number(params.chirp_mass) || Number(params.chirp_mass_source) || 10;
             const distance = Number(params.luminosity_distance) || 500;
             const ra = (params.ra as string) || '12h 00m 00s';
-            const dec = (params.dec as string) || "+00° 00′ 00″";
+            const dec = (params.dec as string) || '+00° 00′ 00″';
 
             const massRatio = Number(params.mass_ratio) || 0.5;
             const mass1 = Number(params.mass_1_source) || 30;
@@ -49,7 +49,8 @@ async function fetchRealGravitationalWavesData(): Promise<GravitationalWavesData
                 detectors.push(...jsonDetectors);
             } else {
                 if ((d.strain as Record<string, unknown>)?.['H1']) detectors.push('LIGO-Hanford');
-                if ((d.strain as Record<string, unknown>)?.['L1']) detectors.push('LIGO-Livingston');
+                if ((d.strain as Record<string, unknown>)?.['L1'])
+                    detectors.push('LIGO-Livingston');
                 if ((d.strain as Record<string, unknown>)?.['V1']) detectors.push('Virgo');
                 if (detectors.length === 0) detectors.push('LIGO-Hanford', 'LIGO-Livingston');
             }
@@ -57,7 +58,8 @@ async function fetchRealGravitationalWavesData(): Promise<GravitationalWavesData
             return {
                 id: `GW-LIVE-${i}`,
                 eventName: name,
-                detectionTime: (d.GPS as string) || (d.commonName as string) || new Date().toISOString(),
+                detectionTime:
+                    (d.GPS as string) || (d.commonName as string) || new Date().toISOString(),
                 source,
                 estimatedDistance: Math.round(distance),
                 signalToNoise: Math.round(snr * 10) / 10,

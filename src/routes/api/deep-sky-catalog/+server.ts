@@ -37,13 +37,16 @@ async function fetchRealDeepSkyCatalogData(): Promise<DeepSkyCatalogData> {
 
             const raVal = record.ra;
             const decVal = record.dec;
-            const raStr = typeof raVal === 'number' ? formatRA(raVal) : String(raVal || '00h 00m 00s');
-            const decStr = typeof decVal === 'number' ? formatDec(decVal) : String(decVal || "+00° 00′ 00″");
+            const raStr =
+                typeof raVal === 'number' ? formatRA(raVal) : String(raVal || '00h 00m 00s');
+            const decStr =
+                typeof decVal === 'number' ? formatDec(decVal) : String(decVal || '+00° 00′ 00″');
 
             return {
                 id: `DSO-LIVE-${i}`,
                 name: (record.name1 as string) || `DSO-${i}`,
-                catalogDesignation: (record.name2 as string) || (record.name1 as string) || `Unknown-${i}`,
+                catalogDesignation:
+                    (record.name2 as string) || (record.name1 as string) || `Unknown-${i}`,
                 type: mappedType,
                 constellation: (record.constellation as string) || 'Unknown',
                 rightAscension: raStr,
@@ -51,8 +54,10 @@ async function fetchRealDeepSkyCatalogData(): Promise<DeepSkyCatalogData> {
                 apparentMagnitude: Number(record.mag) || 10,
                 distanceLightYears: Number(record.distance_ly) || 1000,
                 imagingRecommendation: {
-                    minAperture: mappedType === 'galaxy' ? 200 : mappedType === 'cluster' ? 50 : 100,
-                    idealExposure: mappedType === 'galaxy' ? 240 : mappedType === 'cluster' ? 60 : 180,
+                    minAperture:
+                        mappedType === 'galaxy' ? 200 : mappedType === 'cluster' ? 50 : 100,
+                    idealExposure:
+                        mappedType === 'galaxy' ? 240 : mappedType === 'cluster' ? 60 : 180,
                     bestMonths,
                     filterSuggestion:
                         mappedType === 'nebula'

@@ -16,7 +16,9 @@ describe('GET /api/deep-sky-catalog', () => {
 
     it('returns dummy deep sky data on testnet', async () => {
         const { GET } = await import('../../../routes/api/deep-sky-catalog/+server.js');
-        const response = await GET({ cookies: makeCookies('stellar:testnet') } as Parameters<typeof GET>[0]);
+        const response = await GET({ cookies: makeCookies('stellar:testnet') } as Parameters<
+            typeof GET
+        >[0]);
         expect(response.status).toBe(200);
 
         const data = await response.json();
@@ -30,7 +32,9 @@ describe('GET /api/deep-sky-catalog', () => {
         vi.stubGlobal('fetch', vi.fn().mockRejectedValue(new Error('Network error')));
 
         const { GET } = await import('../../../routes/api/deep-sky-catalog/+server.js');
-        const response = await GET({ cookies: makeCookies('stellar:pubnet') } as Parameters<typeof GET>[0]);
+        const response = await GET({ cookies: makeCookies('stellar:pubnet') } as Parameters<
+            typeof GET
+        >[0]);
         expect(response.status).toBe(200);
         expect(response.headers.get('X-Data-Source')).toBe('fallback');
     });
@@ -67,7 +71,9 @@ describe('GET /api/deep-sky-catalog', () => {
         );
 
         const { GET } = await import('../../../routes/api/deep-sky-catalog/+server.js');
-        const response = await GET({ cookies: makeCookies('stellar:pubnet') } as Parameters<typeof GET>[0]);
+        const response = await GET({ cookies: makeCookies('stellar:pubnet') } as Parameters<
+            typeof GET
+        >[0]);
         expect(response.status).toBe(200);
 
         const data = await response.json();
@@ -84,10 +90,42 @@ describe('GET /api/deep-sky-catalog', () => {
     it('maps object types correctly', async () => {
         const mockResponse = {
             results: [
-                { name1: 'Cluster1', type: 'Open Cluster', constellation: 'Taurus', ra: 0, dec: 0, mag: 5, distance_ly: 100 },
-                { name1: 'Cluster2', type: 'Globular Cluster', constellation: 'Sagittarius', ra: 0, dec: 0, mag: 6, distance_ly: 200 },
-                { name1: 'Remnant1', type: 'Supernova Remnant', constellation: 'Taurus', ra: 0, dec: 0, mag: 8, distance_ly: 6500 },
-                { name1: 'PNebula', type: 'Planetary Nebula', constellation: 'Lyra', ra: 0, dec: 0, mag: 9, distance_ly: 2000 },
+                {
+                    name1: 'Cluster1',
+                    type: 'Open Cluster',
+                    constellation: 'Taurus',
+                    ra: 0,
+                    dec: 0,
+                    mag: 5,
+                    distance_ly: 100,
+                },
+                {
+                    name1: 'Cluster2',
+                    type: 'Globular Cluster',
+                    constellation: 'Sagittarius',
+                    ra: 0,
+                    dec: 0,
+                    mag: 6,
+                    distance_ly: 200,
+                },
+                {
+                    name1: 'Remnant1',
+                    type: 'Supernova Remnant',
+                    constellation: 'Taurus',
+                    ra: 0,
+                    dec: 0,
+                    mag: 8,
+                    distance_ly: 6500,
+                },
+                {
+                    name1: 'PNebula',
+                    type: 'Planetary Nebula',
+                    constellation: 'Lyra',
+                    ra: 0,
+                    dec: 0,
+                    mag: 9,
+                    distance_ly: 2000,
+                },
             ],
         };
 
@@ -97,7 +135,9 @@ describe('GET /api/deep-sky-catalog', () => {
         );
 
         const { GET } = await import('../../../routes/api/deep-sky-catalog/+server.js');
-        const response = await GET({ cookies: makeCookies('stellar:pubnet') } as Parameters<typeof GET>[0]);
+        const response = await GET({ cookies: makeCookies('stellar:pubnet') } as Parameters<
+            typeof GET
+        >[0]);
         const data = await response.json();
 
         expect(data.objects[0].type).toBe('cluster');
@@ -109,9 +149,33 @@ describe('GET /api/deep-sky-catalog', () => {
     it('assigns appropriate imaging recommendations based on type', async () => {
         const mockResponse = {
             results: [
-                { name1: 'Galaxy1', type: 'Galaxy', constellation: 'Andromeda', ra: 0, dec: 0, mag: 5, distance_ly: 100000 },
-                { name1: 'Nebula1', type: 'Nebula', constellation: 'Orion', ra: 0, dec: 0, mag: 4, distance_ly: 1000 },
-                { name1: 'Cluster1', type: 'Open Cluster', constellation: 'Taurus', ra: 0, dec: 0, mag: 3, distance_ly: 500 },
+                {
+                    name1: 'Galaxy1',
+                    type: 'Galaxy',
+                    constellation: 'Andromeda',
+                    ra: 0,
+                    dec: 0,
+                    mag: 5,
+                    distance_ly: 100000,
+                },
+                {
+                    name1: 'Nebula1',
+                    type: 'Nebula',
+                    constellation: 'Orion',
+                    ra: 0,
+                    dec: 0,
+                    mag: 4,
+                    distance_ly: 1000,
+                },
+                {
+                    name1: 'Cluster1',
+                    type: 'Open Cluster',
+                    constellation: 'Taurus',
+                    ra: 0,
+                    dec: 0,
+                    mag: 3,
+                    distance_ly: 500,
+                },
             ],
         };
 
@@ -121,7 +185,9 @@ describe('GET /api/deep-sky-catalog', () => {
         );
 
         const { GET } = await import('../../../routes/api/deep-sky-catalog/+server.js');
-        const response = await GET({ cookies: makeCookies('stellar:pubnet') } as Parameters<typeof GET>[0]);
+        const response = await GET({ cookies: makeCookies('stellar:pubnet') } as Parameters<
+            typeof GET
+        >[0]);
         const data = await response.json();
 
         // Galaxy should need large aperture
@@ -156,7 +222,9 @@ describe('GET /api/deep-sky-catalog', () => {
         );
 
         const { GET } = await import('../../../routes/api/deep-sky-catalog/+server.js');
-        const response = await GET({ cookies: makeCookies('stellar:pubnet') } as Parameters<typeof GET>[0]);
+        const response = await GET({ cookies: makeCookies('stellar:pubnet') } as Parameters<
+            typeof GET
+        >[0]);
         const data = await response.json();
 
         expect(data.objects[0].rightAscension).toMatch(/12h 00m/);

@@ -31,7 +31,16 @@ async function fetchRealSpaceWeatherData(): Promise<SpaceWeatherData> {
             return {
                 id: `GS-LIVE-${i}`,
                 kpIndex: kp,
-                severity: kp >= 8 ? 'extreme' : kp >= 7 ? 'severe' : kp >= 6 ? 'strong' : kp >= 5 ? 'moderate' : 'minor',
+                severity:
+                    kp >= 8
+                        ? 'extreme'
+                        : kp >= 7
+                          ? 'severe'
+                          : kp >= 6
+                            ? 'strong'
+                            : kp >= 5
+                              ? 'moderate'
+                              : 'minor',
                 startTime: entry[0],
                 estimatedEndTime: entry[0],
             };
@@ -44,12 +53,16 @@ async function fetchRealSpaceWeatherData(): Promise<SpaceWeatherData> {
             id: `SF-LIVE-${i}`,
             class: (f.current_class as string) || (f.max_class as string) || 'C1.0',
             region: Number(f.active_region) || 0,
-            peakTime: (f.max_time as string) || (f.begin_time as string) || new Date().toISOString(),
-            duration: Math.round(
-                ((new Date((f.end_time as string) || (f.max_time as string) || Date.now()).getTime()) -
-                    (new Date((f.begin_time as string) || Date.now()).getTime())) /
-                    60000,
-            ) || 10,
+            peakTime:
+                (f.max_time as string) || (f.begin_time as string) || new Date().toISOString(),
+            duration:
+                Math.round(
+                    (new Date(
+                        (f.end_time as string) || (f.max_time as string) || Date.now(),
+                    ).getTime() -
+                        new Date((f.begin_time as string) || Date.now()).getTime()) /
+                        60000,
+                ) || 10,
         }));
 
     // Aurora: derive rough probabilities from latest Kp

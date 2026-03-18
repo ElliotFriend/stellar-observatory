@@ -16,7 +16,9 @@ describe('GET /api/space-weather', () => {
 
     it('returns dummy space weather data on testnet', async () => {
         const { GET } = await import('../../../routes/api/space-weather/+server.js');
-        const response = await GET({ cookies: makeCookies('stellar:testnet') } as Parameters<typeof GET>[0]);
+        const response = await GET({ cookies: makeCookies('stellar:testnet') } as Parameters<
+            typeof GET
+        >[0]);
         expect(response.status).toBe(200);
 
         const data = await response.json();
@@ -29,7 +31,9 @@ describe('GET /api/space-weather', () => {
 
     it('returns dummy data when no cookie is set (defaults to testnet)', async () => {
         const { GET } = await import('../../../routes/api/space-weather/+server.js');
-        const response = await GET({ cookies: { get: () => undefined } } as unknown as Parameters<typeof GET>[0]);
+        const response = await GET({ cookies: { get: () => undefined } } as unknown as Parameters<
+            typeof GET
+        >[0]);
         expect(response.status).toBe(200);
 
         const data = await response.json();
@@ -41,7 +45,9 @@ describe('GET /api/space-weather', () => {
         vi.stubGlobal('fetch', vi.fn().mockRejectedValue(new Error('Network error')));
 
         const { GET } = await import('../../../routes/api/space-weather/+server.js');
-        const response = await GET({ cookies: makeCookies('stellar:pubnet') } as Parameters<typeof GET>[0]);
+        const response = await GET({ cookies: makeCookies('stellar:pubnet') } as Parameters<
+            typeof GET
+        >[0]);
         expect(response.status).toBe(200);
         expect(response.headers.get('X-Data-Source')).toBe('fallback');
 
@@ -58,12 +64,16 @@ describe('GET /api/space-weather', () => {
             ['time_tag', 'bx_gsm', 'by_gsm', 'bz_gsm'],
             ['2025-03-15 12:00:00', '1.0', '2.0', '-3.0'],
         ];
-        const mockKpData = [['time_tag', 'Kp'], ['2025-03-15 12:00:00', '3']];
+        const mockKpData = [
+            ['time_tag', 'Kp'],
+            ['2025-03-15 12:00:00', '3'],
+        ];
         const mockFlareData: unknown[] = [];
 
         vi.stubGlobal(
             'fetch',
-            vi.fn()
+            vi
+                .fn()
                 .mockResolvedValueOnce({ json: () => Promise.resolve(mockWindData) })
                 .mockResolvedValueOnce({ json: () => Promise.resolve(mockMagData) })
                 .mockResolvedValueOnce({ json: () => Promise.resolve(mockKpData) })
@@ -71,7 +81,9 @@ describe('GET /api/space-weather', () => {
         );
 
         const { GET } = await import('../../../routes/api/space-weather/+server.js');
-        const response = await GET({ cookies: makeCookies('stellar:pubnet') } as Parameters<typeof GET>[0]);
+        const response = await GET({ cookies: makeCookies('stellar:pubnet') } as Parameters<
+            typeof GET
+        >[0]);
         expect(response.status).toBe(200);
         expect(response.headers.get('X-Data-Source')).toBeNull();
 
@@ -110,7 +122,8 @@ describe('GET /api/space-weather', () => {
 
         vi.stubGlobal(
             'fetch',
-            vi.fn()
+            vi
+                .fn()
                 .mockResolvedValueOnce({ json: () => Promise.resolve(mockWindData) })
                 .mockResolvedValueOnce({ json: () => Promise.resolve(mockMagData) })
                 .mockResolvedValueOnce({ json: () => Promise.resolve(mockKpData) })
@@ -118,7 +131,9 @@ describe('GET /api/space-weather', () => {
         );
 
         const { GET } = await import('../../../routes/api/space-weather/+server.js');
-        const response = await GET({ cookies: makeCookies('stellar:pubnet') } as Parameters<typeof GET>[0]);
+        const response = await GET({ cookies: makeCookies('stellar:pubnet') } as Parameters<
+            typeof GET
+        >[0]);
         const data = await response.json();
 
         // Verify geomagnetic storms are present (Kp >= 4)

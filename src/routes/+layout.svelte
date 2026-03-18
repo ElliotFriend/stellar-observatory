@@ -36,6 +36,22 @@
         {@render children()}
     </main>
     <footer class="border-t border-space-600/50 py-4 text-center text-xs text-slate-600">
-        Powered by <a href="https://x402.org" target="_blank" class="text-nebula-400 transition-colors hover:text-white">x402</a> protocol &middot; <a href="https://www.stellar.org" target="_blank" class="text-stellar-400 transition-colors hover:text-white">Stellar</a> Network &middot; <a href="https://github.com/elliotfriend/stellar-observer" target="_blank" class="text-slate-400 transition-colors hover:text-white">Source Code</a>
+        Powered by <a
+            href="https://x402.org"
+            target="_blank"
+            class="text-nebula-400 transition-colors hover:text-white">x402</a
+        >
+        protocol &middot;
+        <a
+            href="https://www.stellar.org"
+            target="_blank"
+            class="text-stellar-400 transition-colors hover:text-white">Stellar</a
+        >
+        Network &middot;
+        <a
+            href="https://github.com/elliotfriend/stellar-observer"
+            target="_blank"
+            class="text-slate-400 transition-colors hover:text-white">Source Code</a
+        >
     </footer>
 </div>

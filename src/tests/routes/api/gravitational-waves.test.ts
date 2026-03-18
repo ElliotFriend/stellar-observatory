@@ -16,7 +16,9 @@ describe('GET /api/gravitational-waves', () => {
 
     it('returns dummy gravitational wave data on testnet', async () => {
         const { GET } = await import('../../../routes/api/gravitational-waves/+server.js');
-        const response = await GET({ cookies: makeCookies('stellar:testnet') } as Parameters<typeof GET>[0]);
+        const response = await GET({ cookies: makeCookies('stellar:testnet') } as Parameters<
+            typeof GET
+        >[0]);
         expect(response.status).toBe(200);
 
         const data = await response.json();
@@ -31,7 +33,9 @@ describe('GET /api/gravitational-waves', () => {
         vi.stubGlobal('fetch', vi.fn().mockRejectedValue(new Error('Network error')));
 
         const { GET } = await import('../../../routes/api/gravitational-waves/+server.js');
-        const response = await GET({ cookies: makeCookies('stellar:pubnet') } as Parameters<typeof GET>[0]);
+        const response = await GET({ cookies: makeCookies('stellar:pubnet') } as Parameters<
+            typeof GET
+        >[0]);
         expect(response.status).toBe(200);
         expect(response.headers.get('X-Data-Source')).toBe('fallback');
     });
@@ -76,7 +80,9 @@ describe('GET /api/gravitational-waves', () => {
         );
 
         const { GET } = await import('../../../routes/api/gravitational-waves/+server.js');
-        const response = await GET({ cookies: makeCookies('stellar:pubnet') } as Parameters<typeof GET>[0]);
+        const response = await GET({ cookies: makeCookies('stellar:pubnet') } as Parameters<
+            typeof GET
+        >[0]);
         expect(response.status).toBe(200);
 
         const data = await response.json();
@@ -104,17 +110,35 @@ describe('GET /api/gravitational-waves', () => {
             events: {
                 BBH_Event: {
                     GPS: '2020-01-01T00:00:00Z',
-                    parameters: { mass_1_source: 40, mass_2_source: 35, chirp_mass: 30, network_matched_filter_snr: 20, luminosity_distance: 500 },
+                    parameters: {
+                        mass_1_source: 40,
+                        mass_2_source: 35,
+                        chirp_mass: 30,
+                        network_matched_filter_snr: 20,
+                        luminosity_distance: 500,
+                    },
                     strain: { H1: {}, L1: {} },
                 },
                 BNS_Event: {
                     GPS: '2020-02-01T00:00:00Z',
-                    parameters: { mass_1_source: 1.5, mass_2_source: 1.3, chirp_mass: 1.2, network_matched_filter_snr: 15, luminosity_distance: 100 },
+                    parameters: {
+                        mass_1_source: 1.5,
+                        mass_2_source: 1.3,
+                        chirp_mass: 1.2,
+                        network_matched_filter_snr: 15,
+                        luminosity_distance: 100,
+                    },
                     strain: { H1: {}, L1: {} },
                 },
                 NSBH_Event: {
                     GPS: '2020-03-01T00:00:00Z',
-                    parameters: { mass_1_source: 8, mass_2_source: 1.5, chirp_mass: 3, network_matched_filter_snr: 12, luminosity_distance: 300 },
+                    parameters: {
+                        mass_1_source: 8,
+                        mass_2_source: 1.5,
+                        chirp_mass: 3,
+                        network_matched_filter_snr: 12,
+                        luminosity_distance: 300,
+                    },
                     strain: { H1: {}, L1: {} },
                 },
             },
@@ -126,7 +150,9 @@ describe('GET /api/gravitational-waves', () => {
         );
 
         const { GET } = await import('../../../routes/api/gravitational-waves/+server.js');
-        const response = await GET({ cookies: makeCookies('stellar:pubnet') } as Parameters<typeof GET>[0]);
+        const response = await GET({ cookies: makeCookies('stellar:pubnet') } as Parameters<
+            typeof GET
+        >[0]);
         const data = await response.json();
 
         expect(data.events[0].source).toBe('binary-black-hole');
@@ -139,12 +165,24 @@ describe('GET /api/gravitational-waves', () => {
             events: {
                 HighSNR: {
                     GPS: '2020-01-01T00:00:00Z',
-                    parameters: { mass_1_source: 30, mass_2_source: 30, chirp_mass: 26, network_matched_filter_snr: 25, luminosity_distance: 400 },
+                    parameters: {
+                        mass_1_source: 30,
+                        mass_2_source: 30,
+                        chirp_mass: 26,
+                        network_matched_filter_snr: 25,
+                        luminosity_distance: 400,
+                    },
                     strain: { H1: {}, L1: {} },
                 },
                 LowSNR: {
                     GPS: '2020-02-01T00:00:00Z',
-                    parameters: { mass_1_source: 30, mass_2_source: 30, chirp_mass: 26, network_matched_filter_snr: 8, luminosity_distance: 1200 },
+                    parameters: {
+                        mass_1_source: 30,
+                        mass_2_source: 30,
+                        chirp_mass: 26,
+                        network_matched_filter_snr: 8,
+                        luminosity_distance: 1200,
+                    },
                     strain: { H1: {}, L1: {} },
                 },
             },
@@ -156,7 +194,9 @@ describe('GET /api/gravitational-waves', () => {
         );
 
         const { GET } = await import('../../../routes/api/gravitational-waves/+server.js');
-        const response = await GET({ cookies: makeCookies('stellar:pubnet') } as Parameters<typeof GET>[0]);
+        const response = await GET({ cookies: makeCookies('stellar:pubnet') } as Parameters<
+            typeof GET
+        >[0]);
         const data = await response.json();
 
         // Higher SNR => higher confidence

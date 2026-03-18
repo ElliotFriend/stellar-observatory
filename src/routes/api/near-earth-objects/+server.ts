@@ -20,14 +20,17 @@ async function fetchRealNearEarthObjectsData(): Promise<NearEarthObjectsData> {
         const vRel = parseFloat(row[idx('v_rel')]);
         const hMag = parseFloat(row[idx('h')]) || 22;
         // Estimate diameter from absolute magnitude H
-        const diameterKm = 1329 / Math.sqrt(0.15) * Math.pow(10, -hMag / 5);
+        const diameterKm = (1329 / Math.sqrt(0.15)) * Math.pow(10, -hMag / 5);
         const diameterM = diameterKm * 1000;
 
         return {
             id: `NEO-LIVE-${i}`,
             name: row[idx('des')] || `Unknown-${i}`,
             designation: row[idx('des')] || `Unknown-${i}`,
-            estimatedDiameter: { min: Math.round(diameterM * 0.7), max: Math.round(diameterM * 1.4) },
+            estimatedDiameter: {
+                min: Math.round(diameterM * 0.7),
+                max: Math.round(diameterM * 1.4),
+            },
             isHazardous: distAU < 0.05 && diameterM > 140,
             closeApproachDate: row[idx('cd')],
             missDistance: { astronomical: distAU, kilometers: Math.round(distKm) },

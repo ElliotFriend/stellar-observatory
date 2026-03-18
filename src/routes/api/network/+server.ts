@@ -9,7 +9,10 @@ export const POST: RequestHandler = async ({ request, cookies }) => {
     const network = body.network as StellarNetwork;
 
     if (!network || !VALID_NETWORKS.includes(network)) {
-        return json({ error: 'Invalid network. Must be "stellar:testnet" or "stellar:pubnet".' }, { status: 400 });
+        return json(
+            { error: 'Invalid network. Must be "stellar:testnet" or "stellar:pubnet".' },
+            { status: 400 },
+        );
     }
 
     cookies.set(NETWORK_COOKIE_NAME, network, {

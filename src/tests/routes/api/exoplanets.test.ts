@@ -16,7 +16,9 @@ describe('GET /api/exoplanets', () => {
 
     it('returns dummy exoplanet data on testnet', async () => {
         const { GET } = await import('../../../routes/api/exoplanets/+server.js');
-        const response = await GET({ cookies: makeCookies('stellar:testnet') } as Parameters<typeof GET>[0]);
+        const response = await GET({ cookies: makeCookies('stellar:testnet') } as Parameters<
+            typeof GET
+        >[0]);
         expect(response.status).toBe(200);
 
         const data = await response.json();
@@ -30,7 +32,9 @@ describe('GET /api/exoplanets', () => {
         vi.stubGlobal('fetch', vi.fn().mockRejectedValue(new Error('Network error')));
 
         const { GET } = await import('../../../routes/api/exoplanets/+server.js');
-        const response = await GET({ cookies: makeCookies('stellar:pubnet') } as Parameters<typeof GET>[0]);
+        const response = await GET({ cookies: makeCookies('stellar:pubnet') } as Parameters<
+            typeof GET
+        >[0]);
         expect(response.status).toBe(200);
         expect(response.headers.get('X-Data-Source')).toBe('fallback');
     });
@@ -67,7 +71,9 @@ describe('GET /api/exoplanets', () => {
         );
 
         const { GET } = await import('../../../routes/api/exoplanets/+server.js');
-        const response = await GET({ cookies: makeCookies('stellar:pubnet') } as Parameters<typeof GET>[0]);
+        const response = await GET({ cookies: makeCookies('stellar:pubnet') } as Parameters<
+            typeof GET
+        >[0]);
         expect(response.status).toBe(200);
 
         const data = await response.json();
@@ -114,7 +120,9 @@ describe('GET /api/exoplanets', () => {
         );
 
         const { GET } = await import('../../../routes/api/exoplanets/+server.js');
-        const response = await GET({ cookies: makeCookies('stellar:pubnet') } as Parameters<typeof GET>[0]);
+        const response = await GET({ cookies: makeCookies('stellar:pubnet') } as Parameters<
+            typeof GET
+        >[0]);
         const data = await response.json();
 
         // Goldilocks should have high habitability
@@ -149,7 +157,9 @@ describe('GET /api/exoplanets', () => {
         );
 
         const { GET } = await import('../../../routes/api/exoplanets/+server.js');
-        const response = await GET({ cookies: makeCookies('stellar:pubnet') } as Parameters<typeof GET>[0]);
+        const response = await GET({ cookies: makeCookies('stellar:pubnet') } as Parameters<
+            typeof GET
+        >[0]);
         const data = await response.json();
 
         // 100 pc * 3.26156 = ~326.2 ly

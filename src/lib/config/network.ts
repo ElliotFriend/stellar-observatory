@@ -1,10 +1,8 @@
 import { env } from '$env/dynamic/public';
 
 export type StellarNetwork = 'stellar:testnet' | 'stellar:pubnet';
-
 export const NETWORK_COOKIE_NAME = 'stellar_network';
-
-const VALID_NETWORKS: StellarNetwork[] = ['stellar:testnet', 'stellar:pubnet'];
+export const VALID_NETWORKS: StellarNetwork[] = ['stellar:testnet', 'stellar:pubnet'];
 
 const NETWORK_PASSPHRASES: Record<StellarNetwork, string> = {
     'stellar:testnet': 'Test SDF Network ; September 2015',

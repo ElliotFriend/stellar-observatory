@@ -70,12 +70,11 @@ export interface DeepSkyObject {
     id: string;
     name: string;
     catalogDesignation: string; // e.g. "NGC 224", "M31"
-    type: 'galaxy' | 'nebula' | 'cluster' | 'supernova-remnant';
+    type: 'galaxy' | 'nebula' | 'cluster' | 'supernova-remnant' | 'not-found' | 'star';
     constellation: string;
     rightAscension: string;
     declination: string;
     apparentMagnitude: number;
-    distanceLightYears: number;
     imagingRecommendation: {
         minAperture: number; // mm
         idealExposure: number; // seconds

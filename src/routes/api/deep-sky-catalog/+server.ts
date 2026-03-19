@@ -4,33 +4,50 @@ import { getDummyDeepSkyCatalogData } from '$lib/data/deep-sky-catalog';
 import { NETWORK_COOKIE_NAME, getNetworkFromCookie, isTestnet } from '$lib/config/network';
 import type { DeepSkyCatalogData, DeepSkyObject } from '$lib/types/api';
 
+// source: http://www.klima-luft.de/steinicke/ngcic/rev2000/Explan.htm#3 (section 3.5)
 const TYPE_MAP: Record<string, DeepSkyObject['type']> = {
-    Galaxy: 'galaxy',
-    Nebula: 'nebula',
-    'Open Cluster': 'cluster',
-    'Globular Cluster': 'cluster',
-    'Planetary Nebula': 'nebula',
-    'Supernova Remnant': 'supernova-remnant',
-    'Emission Nebula': 'nebula',
-    'Reflection Nebula': 'nebula',
-    Cluster: 'cluster',
+    '*': 'star', // star
+    '**': 'star', // double star
+    '***': 'star', // star group
+    'Ast': 'star', // asterism
+    'DN': 'nebula', // dark nebula
+    'GC': 'cluster', // globular cluster
+    'Gxy': 'galaxy', // galaxy
+    'GxyCld': 'galaxy', // galaxy
+    'HIIRgn': 'nebula', // hydrogen-ionized region... it's gassy, so we'll call it a nebula
+    'MWSC': 'cluster', // milky way star cluster
+    'NF': 'not-found', // not sure why this is here...
+    'Neb': 'nebula', // nebula
+    'Neb?': 'nebula', // nebula
+    'OC': 'cluster', // open cluster
+    'OC+Neb': 'nebula', // open cluster and nebula
+    'PD': 'galaxy', // peculiar dwarf galaxy
+    'PN': 'nebula', // planetary nebular
+    'SNR': 'supernova-remnant', // supernova remnant
 };
 
 async function fetchRealDeepSkyCatalogData(): Promise<DeepSkyCatalogData> {
-    const res = await fetch(
-        'https://datastro.eu/api/explore/v2.1/catalog/datasets/deep-sky-objects/records?limit=20&select=name1,name2,type,constellation,ra,dec,mag,distance_ly',
-    );
+    const limit: number = 50;
+    const select: string[] = ['id', 'name', 'type', 'const', 'ra', 'dec', 'mag', 'cat1', 'id1'];
+    const where: string[] = ['name is not null'];
+    const order: string[] = ['mag asc']
+
+    let url = `https://www.datastro.eu/api/explore/v2.1/catalog/datasets/deep-sky-objects/records?limit=${limit}`
+    if (select.length) {
+        url += `&select=${select.join(',')}`
+    }
+    if (where.length) {
+        url += `&where=${encodeURIComponent(where[0])}`
+    }
+    if (order.length) {
+        url += `&order_by=${encodeURIComponent(order.join(', '))}`
+    }
+
+    const res = await fetch(url);
     const raw = await res.json();
 
-    const monthIndex = new Date().getMonth();
-    const bestMonths = [
-        new Date(2025, monthIndex, 1).toLocaleString('en', { month: 'long' }),
-        new Date(2025, monthIndex + 1, 1).toLocaleString('en', { month: 'long' }),
-        new Date(2025, monthIndex + 2, 1).toLocaleString('en', { month: 'long' }),
-    ];
-
     const objects: DeepSkyObject[] = (raw.results || []).map(
-        (record: Record<string, unknown>, i: number) => {
+        (record: Record<string, unknown>) => {
             const rawType = (record.type as string) || 'Galaxy';
             const mappedType = TYPE_MAP[rawType] || 'galaxy';
 
@@ -41,23 +58,28 @@ async function fetchRealDeepSkyCatalogData(): Promise<DeepSkyCatalogData> {
             const decStr =
                 typeof decVal === 'number' ? formatDec(decVal) : String(decVal || '+00° 00′ 00″');
 
+            let catalogDesignation = '';
+            if (record.cat1) {
+                catalogDesignation += record.cat1
+            }
+            if (record.id1) {
+                catalogDesignation += ` ${record.id1}`
+            }
+
             return {
-                id: `DSO-LIVE-${i}`,
-                name: (record.name1 as string) || `DSO-${i}`,
-                catalogDesignation:
-                    (record.name2 as string) || (record.name1 as string) || `Unknown-${i}`,
+                id: record.id,
+                name: (record.name as string) || null,
+                catalogDesignation,
                 type: mappedType,
-                constellation: (record.constellation as string) || 'Unknown',
+                constellation: (record.const as string) || 'Unknown',
                 rightAscension: raStr,
                 declination: decStr,
-                apparentMagnitude: Number(record.mag) || 10,
-                distanceLightYears: Number(record.distance_ly) || 1000,
+                apparentMagnitude: Number(record.mag),
                 imagingRecommendation: {
                     minAperture:
                         mappedType === 'galaxy' ? 200 : mappedType === 'cluster' ? 50 : 100,
                     idealExposure:
                         mappedType === 'galaxy' ? 240 : mappedType === 'cluster' ? 60 : 180,
-                    bestMonths,
                     filterSuggestion:
                         mappedType === 'nebula'
                             ? 'H-alpha or dual-narrowband'
@@ -95,15 +117,17 @@ function formatDec(degrees: number): string {
 
 export const GET: RequestHandler = async ({ cookies }) => {
     const network = getNetworkFromCookie(cookies.get(NETWORK_COOKIE_NAME));
-
+    console.log('network', network)
     if (isTestnet(network)) {
+        console.log('it is testnet?')
         return json(getDummyDeepSkyCatalogData());
     }
 
     try {
         const data = await fetchRealDeepSkyCatalogData();
         return json(data);
-    } catch {
+    } catch (err) {
+        console.error('err', err)
         return json(getDummyDeepSkyCatalogData(), {
             headers: { 'X-Data-Source': 'fallback' },
         });

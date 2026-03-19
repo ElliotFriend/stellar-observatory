@@ -1,5 +1,6 @@
 <script lang="ts">
     import { onMount } from 'svelte';
+    import { resolve } from '$app/paths';
     import type { LayoutProps } from './$types';
 
     import Header from '$lib/components/Header.svelte';
@@ -52,6 +53,10 @@
             href="https://github.com/elliotfriend/stellar-observer"
             target="_blank"
             class="text-slate-400 transition-colors hover:text-white">Source Code</a
+        >
+        &middot;
+        <a href={resolve('/attributions')} class="text-slate-400 transition-colors hover:text-white"
+            >Attributions</a
         >
     </footer>
 </div>

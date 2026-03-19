@@ -39,7 +39,3 @@
         Connect Wallet
     {/if}
 </button>
-
-{#if wallet.error}
-    <p class="mt-1 text-xs text-red-400">{wallet.error}</p>
-{/if}

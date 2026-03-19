@@ -46,7 +46,14 @@
 
             responseData = await res.json();
         } catch (err) {
-            fetchError = err instanceof Error ? err.message : String(err);
+            if (err instanceof Error) {
+                fetchError = err.message;
+            } else if (err && typeof err === 'object') {
+                const e = err as Record<string, unknown>;
+                fetchError = String(e.message ?? e.error ?? e.detail ?? JSON.stringify(e));
+            } else {
+                fetchError = String(err);
+            }
         } finally {
             loading = false;
         }

@@ -1,20 +1,18 @@
 import type { ClientStellarSigner } from '@x402/stellar';
 import type { Network } from '@x402/core/types';
-import { createWalletKitSigner } from './adapter.js';
-import { createPaidFetch } from './client.js';
+import { createWalletKitSigner } from '$lib/wallet/adapter';
+import { createPaidFetch } from '$lib/wallet/client';
 
 export type WalletState = {
     address: string | null;
     connected: boolean;
     loading: boolean;
-    error: string | null;
     paidFetch: ((url: string, init?: RequestInit) => Promise<Response>) | null;
 };
 
 let address = $state<string | null>(null);
 let connected = $state(false);
 let loading = $state(false);
-let error = $state<string | null>(null);
 let signer = $state<ClientStellarSigner | null>(null);
 let paidFetch = $state<((url: string, init?: RequestInit) => Promise<Response>) | null>(null);
 
@@ -29,9 +27,6 @@ export function getWalletState(): WalletState {
         get loading() {
             return loading;
         },
-        get error() {
-            return error;
-        },
         get paidFetch() {
             return paidFetch;
         },
@@ -44,7 +39,6 @@ export async function connectWallet(
     rpcUrl?: string,
 ): Promise<void> {
     loading = true;
-    error = null;
 
     try {
         const { StellarWalletsKit } = await import('@creit-tech/stellar-wallets-kit');
@@ -55,7 +49,7 @@ export async function connectWallet(
         signer = createWalletKitSigner(addr, networkPassphrase);
         paidFetch = createPaidFetch(signer, network, rpcUrl);
     } catch (err) {
-        error = err instanceof Error ? err.message : String(err);
+        console.error('Error connecting wallet', err);
         connected = false;
         address = null;
         signer = null;
@@ -76,5 +70,4 @@ export async function disconnectWallet(): Promise<void> {
     connected = false;
     signer = null;
     paidFetch = null;
-    error = null;
 }

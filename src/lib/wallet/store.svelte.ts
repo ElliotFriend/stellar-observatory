@@ -38,7 +38,11 @@ export function getWalletState(): WalletState {
     };
 }
 
-export async function connectWallet(network: Network, networkPassphrase: string): Promise<void> {
+export async function connectWallet(
+    network: Network,
+    networkPassphrase: string,
+    rpcUrl?: string,
+): Promise<void> {
     loading = true;
     error = null;
 
@@ -49,7 +53,7 @@ export async function connectWallet(network: Network, networkPassphrase: string)
         connected = true;
 
         signer = createWalletKitSigner(addr, networkPassphrase);
-        paidFetch = createPaidFetch(signer, network);
+        paidFetch = createPaidFetch(signer, network, rpcUrl);
     } catch (err) {
         error = err instanceof Error ? err.message : String(err);
         connected = false;

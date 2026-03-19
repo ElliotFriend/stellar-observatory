@@ -10,6 +10,7 @@ declare global {
         }
         interface PageData {
             network: StellarNetwork;
+            rpcUrl?: string;
         }
         // interface PageState {}
         // interface Platform {}

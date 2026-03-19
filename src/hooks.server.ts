@@ -14,29 +14,41 @@ import { x402ResourceServer } from '@x402/core/server';
 import type { Network } from '@x402/core/types';
 import { env } from '$env/dynamic/private';
 import { endpoints } from '$lib/config/endpoints';
-import { NETWORK_COOKIE_NAME, getNetworkFromCookie } from '$lib/config/network';
+import { NETWORK_COOKIE_NAME, getNetworkFromCookie, VALID_NETWORKS } from '$lib/config/network';
+import type { StellarNetwork } from '$lib/config/network';
+import { getNetworkConfig } from '$lib/server/config/network';
 
 const payTo = env.PAYTO_ADDRESS;
-const facilitatorUrl = env.FACILITATOR_URL;
-const facilitatorApiKey = env.FACILITATOR_API_KEY;
 const bypassSecret = env.BYPASS_PAYMENT_SECRET;
 
-const facilitatorClient = new HTTPFacilitatorClient({
-    url: facilitatorUrl,
-    ...(facilitatorApiKey && {
-        createAuthHeaders: async () => {
-            const bearer = { Authorization: `Bearer ${facilitatorApiKey}` };
-            return { verify: bearer, settle: bearer, supported: bearer };
-        },
-    }),
-});
+function createResourceServer(network: StellarNetwork) {
+    const config = getNetworkConfig(network);
+    const facilitatorClient = new HTTPFacilitatorClient({
+        url: config.facilitatorUrl,
+        ...(config.facilitatorApiKey && {
+            createAuthHeaders: async () => {
+                const bearer = { Authorization: `Bearer ${config.facilitatorApiKey}` };
+                return { verify: bearer, settle: bearer, supported: bearer };
+            },
+        }),
+    });
 
-const resourceServer = new x402ResourceServer(facilitatorClient);
-resourceServer.register('stellar:*', new ExactStellarScheme());
+    const server = new x402ResourceServer(facilitatorClient);
+    server.register('stellar:*', new ExactStellarScheme());
+    return server;
+}
 
-const initPromise = resourceServer.initialize().catch((err) => {
-    console.error('Failed to initialize x402 resource server:', err);
-});
+const resourceServers = new Map(
+    VALID_NETWORKS.map((network) => [network, createResourceServer(network)]),
+);
+
+const initPromise = Promise.all(
+    [...resourceServers.values()].map((s) =>
+        s.initialize().catch((err) => {
+            console.error('Failed to initialize x402 resource server:', err);
+        }),
+    ),
+);
 
 const dynamicRoutes = new Map(
     endpoints.map((ep) => [
@@ -63,6 +75,9 @@ const x402Handle: Handle = async ({ event, resolve }) => {
     if (!dynamicConfig) return resolve(event);
 
     await initPromise;
+
+    const network = getNetworkFromCookie(event.cookies.get(NETWORK_COOKIE_NAME));
+    const resourceServer = resourceServers.get(network)!;
 
     const clonedRequest = event.request.clone();
     const eventForAccepts = new Proxy(event, {

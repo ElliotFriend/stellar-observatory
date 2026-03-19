@@ -4,7 +4,7 @@
     import { getWalletState, connectWallet, disconnectWallet } from '$lib/wallet/store.svelte';
     import { getNetworkPassphrase } from '$lib/config/network';
 
-    let { network } = $derived(page.data);
+    let { network, rpcUrl } = $derived(page.data);
     let networkPassphrase = $derived(getNetworkPassphrase(network));
     const wallet = getWalletState();
 
@@ -12,7 +12,7 @@
         if (wallet.connected) {
             disconnectWallet();
         } else {
-            connectWallet(network, networkPassphrase);
+            connectWallet(network, networkPassphrase, rpcUrl);
         }
     }
 </script>

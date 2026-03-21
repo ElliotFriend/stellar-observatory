@@ -4,12 +4,13 @@ import { getDummySpaceWeatherData, getSpaceWeatherPreview } from '$lib/data/spac
 describe('space weather data', () => {
     it('returns valid solar wind data', () => {
         const data = getDummySpaceWeatherData();
-        expect(data.solarWind.speed).toBeGreaterThan(0);
-        expect(data.solarWind.density).toBeGreaterThan(0);
-        expect(data.solarWind.temperature).toBeGreaterThan(0);
-        expect(data.solarWind.magneticField).toHaveProperty('bx');
-        expect(data.solarWind.magneticField).toHaveProperty('by');
-        expect(data.solarWind.magneticField).toHaveProperty('bz');
+        expect(data.solarWind).not.toBeNull();
+        expect(data.solarWind!.speed).toBeGreaterThan(0);
+        expect(data.solarWind!.density).toBeGreaterThan(0);
+        expect(data.solarWind!.temperature).toBeGreaterThan(0);
+        expect(data.solarWind!.magneticField).toHaveProperty('bx');
+        expect(data.solarWind!.magneticField).toHaveProperty('by');
+        expect(data.solarWind!.magneticField).toHaveProperty('bz');
     });
 
     it('returns geomagnetic storms with valid kp indices', () => {

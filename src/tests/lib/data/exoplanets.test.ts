@@ -7,7 +7,6 @@ describe('exoplanets data', () => {
         expect(data.planets.length).toBeGreaterThan(0);
         expect(data.count).toBe(data.planets.length);
         for (const planet of data.planets) {
-            expect(planet.id).toBeTruthy();
             expect(planet.name).toBeTruthy();
             expect(planet.hostStar).toBeTruthy();
             expect(planet.distanceLightYears).toBeGreaterThan(0);

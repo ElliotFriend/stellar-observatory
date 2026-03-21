@@ -4,7 +4,6 @@ export function getDummyExoplanetsData(): ExoplanetsData {
     return {
         planets: [
             {
-                id: 'EXO-001',
                 name: 'Kepler-442b',
                 hostStar: 'Kepler-442',
                 distanceLightYears: 1206,
@@ -18,7 +17,6 @@ export function getDummyExoplanetsData(): ExoplanetsData {
                 atmosphere: 'N₂/CO₂ (modeled)',
             },
             {
-                id: 'EXO-002',
                 name: 'TRAPPIST-1e',
                 hostStar: 'TRAPPIST-1',
                 distanceLightYears: 39.6,
@@ -32,7 +30,6 @@ export function getDummyExoplanetsData(): ExoplanetsData {
                 atmosphere: 'Possible H₂O-rich',
             },
             {
-                id: 'EXO-003',
                 name: 'Proxima Centauri b',
                 hostStar: 'Proxima Centauri',
                 distanceLightYears: 4.24,
@@ -46,7 +43,6 @@ export function getDummyExoplanetsData(): ExoplanetsData {
                 atmosphere: null,
             },
             {
-                id: 'EXO-004',
                 name: 'TOI-700 d',
                 hostStar: 'TOI-700',
                 distanceLightYears: 101.4,
@@ -60,7 +56,6 @@ export function getDummyExoplanetsData(): ExoplanetsData {
                 atmosphere: 'CO₂-dominated (modeled)',
             },
             {
-                id: 'EXO-005',
                 name: 'K2-18b',
                 hostStar: 'K2-18',
                 distanceLightYears: 124,
@@ -74,7 +69,6 @@ export function getDummyExoplanetsData(): ExoplanetsData {
                 atmosphere: 'H₂/He with H₂O detected',
             },
             {
-                id: 'EXO-006',
                 name: 'LHS 1140 b',
                 hostStar: 'LHS 1140',
                 distanceLightYears: 48.8,
@@ -102,6 +96,8 @@ export function getExoplanetsPreview() {
         totalConfirmed: data.count,
         topCandidate: topHabitable.name,
         topScore: topHabitable.habitabilityScore,
-        nearestLightYears: Math.min(...data.planets.map((p) => p.distanceLightYears)),
+        nearestLightYears: Math.min(
+            ...data.planets.map((p) => p.distanceLightYears).filter((d): d is number => d !== null),
+        ),
     };
 }

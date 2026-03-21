@@ -4,6 +4,12 @@ vi.mock('$env/dynamic/public', () => ({
     env: { PUBLIC_STELLAR_NETWORK: 'stellar:testnet' },
 }));
 
+function mockFetchWith(data: unknown) {
+    return vi.fn().mockResolvedValueOnce({
+        json: () => Promise.resolve(data),
+    });
+}
+
 describe('GET /api/near-earth-objects', () => {
     beforeEach(() => {
         vi.resetModules();
@@ -14,11 +20,18 @@ describe('GET /api/near-earth-objects', () => {
         return { get: (name: string) => (name === 'stellar_network' ? network : undefined) };
     }
 
+    function makeEvent(network: string, fetchFn?: ReturnType<typeof vi.fn>) {
+        return {
+            cookies: makeCookies(network),
+            fetch: fetchFn,
+        } as unknown as Parameters<
+            Awaited<typeof import('../../../routes/api/near-earth-objects/+server.js')>['GET']
+        >[0];
+    }
+
     it('returns dummy NEO data on testnet', async () => {
         const { GET } = await import('../../../routes/api/near-earth-objects/+server.js');
-        const response = await GET({ cookies: makeCookies('stellar:testnet') } as Parameters<
-            typeof GET
-        >[0]);
+        const response = await GET(makeEvent('stellar:testnet'));
         expect(response.status).toBe(200);
 
         const data = await response.json();
@@ -31,9 +44,9 @@ describe('GET /api/near-earth-objects', () => {
 
     it('returns dummy data when no cookie is set', async () => {
         const { GET } = await import('../../../routes/api/near-earth-objects/+server.js');
-        const response = await GET({ cookies: { get: () => undefined } } as unknown as Parameters<
-            typeof GET
-        >[0]);
+        const response = await GET({
+            cookies: { get: () => undefined },
+        } as unknown as Parameters<typeof GET>[0]);
         expect(response.status).toBe(200);
 
         const data = await response.json();
@@ -41,12 +54,10 @@ describe('GET /api/near-earth-objects', () => {
     });
 
     it('falls back to dummy on pubnet fetch failure', async () => {
-        vi.stubGlobal('fetch', vi.fn().mockRejectedValue(new Error('Network error')));
+        const fetchFn = vi.fn().mockRejectedValue(new Error('Network error'));
 
         const { GET } = await import('../../../routes/api/near-earth-objects/+server.js');
-        const response = await GET({ cookies: makeCookies('stellar:pubnet') } as Parameters<
-            typeof GET
-        >[0]);
+        const response = await GET(makeEvent('stellar:pubnet', fetchFn));
         expect(response.status).toBe(200);
         expect(response.headers.get('X-Data-Source')).toBe('fallback');
     });
@@ -64,6 +75,8 @@ describe('GET /api/near-earth-objects', () => {
                 'v_rel',
                 'v_inf',
                 'h',
+                'diameter',
+                'diameter_sigma',
             ],
             data: [
                 [
@@ -77,6 +90,8 @@ describe('GET /api/near-earth-objects', () => {
                     '15.5',
                     '14.2',
                     '22.5',
+                    null,
+                    null,
                 ],
                 [
                     '2025 CD2',
@@ -89,19 +104,14 @@ describe('GET /api/near-earth-objects', () => {
                     '20.3',
                     '19.1',
                     '19.8',
+                    null,
+                    null,
                 ],
             ],
         };
 
-        vi.stubGlobal(
-            'fetch',
-            vi.fn().mockResolvedValueOnce({ json: () => Promise.resolve(mockCADResponse) }),
-        );
-
         const { GET } = await import('../../../routes/api/near-earth-objects/+server.js');
-        const response = await GET({ cookies: makeCookies('stellar:pubnet') } as Parameters<
-            typeof GET
-        >[0]);
+        const response = await GET(makeEvent('stellar:pubnet', mockFetchWith(mockCADResponse)));
         expect(response.status).toBe(200);
         expect(response.headers.get('X-Data-Source')).toBeNull();
 
@@ -130,9 +140,11 @@ describe('GET /api/near-earth-objects', () => {
                 'v_rel',
                 'v_inf',
                 'h',
+                'diameter',
+                'diameter_sigma',
             ],
             data: [
-                // Close and large (H=18 => large diameter) => hazardous
+                // H=18 => large estimated diameter => hazardous
                 [
                     '2025 HZ1',
                     '10',
@@ -144,8 +156,10 @@ describe('GET /api/near-earth-objects', () => {
                     '22.0',
                     '21.0',
                     '18.0',
+                    null,
+                    null,
                 ],
-                // Far away => not hazardous
+                // H=25 => small estimated diameter => not hazardous
                 [
                     '2025 HZ2',
                     '20',
@@ -157,19 +171,14 @@ describe('GET /api/near-earth-objects', () => {
                     '10.0',
                     '9.0',
                     '25.0',
+                    null,
+                    null,
                 ],
             ],
         };
 
-        vi.stubGlobal(
-            'fetch',
-            vi.fn().mockResolvedValueOnce({ json: () => Promise.resolve(mockCADResponse) }),
-        );
-
         const { GET } = await import('../../../routes/api/near-earth-objects/+server.js');
-        const response = await GET({ cookies: makeCookies('stellar:pubnet') } as Parameters<
-            typeof GET
-        >[0]);
+        const response = await GET(makeEvent('stellar:pubnet', mockFetchWith(mockCADResponse)));
         const data = await response.json();
 
         expect(data.objects[0].isHazardous).toBe(true);

@@ -13,7 +13,6 @@ describe('deep sky catalog data', () => {
             expect(['galaxy', 'nebula', 'cluster', 'supernova-remnant']).toContain(obj.type);
             expect(obj.constellation).toBeTruthy();
             expect(obj.apparentMagnitude).toBeGreaterThan(0);
-            expect(obj.distanceLightYears).toBeGreaterThan(0);
             expect(obj.imagingRecommendation.minAperture).toBeGreaterThan(0);
             expect(obj.imagingRecommendation.idealExposure).toBeGreaterThan(0);
             expect(obj.imagingRecommendation.bestMonths.length).toBeGreaterThan(0);

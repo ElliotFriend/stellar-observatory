@@ -1,36 +1,39 @@
+export interface SolarWind {
+    speed: number; // km/s
+    density: number; // protons/cm³
+    temperature: number; // Kelvin
+    magneticField: { bx: number; by: number; bz: number }; // nT
+}
+
+export interface GeomagneticStorm {
+    kpIndex: number; // 0-9
+    severity: 'minor' | 'moderate' | 'strong' | 'severe' | 'extreme';
+    timeTag: string;
+}
+
+export interface SolarFlare {
+    sourceSatellite: number;
+    class: string; // e.g. "X1.5", "M3.2"
+    peakTime: string;
+    duration: number; // minutes
+}
+
+export interface AuroraForecast {
+    northernHemisphere: { latitude: number; probability: number }[];
+    southernHemisphere: { latitude: number; probability: number }[];
+}
+
 export interface SpaceWeatherData {
-    solarWind: {
-        speed: number; // km/s
-        density: number; // protons/cm³
-        temperature: number; // Kelvin
-        magneticField: { bx: number; by: number; bz: number }; // nT
-    };
-    geomagneticStorms: Array<{
-        id: string;
-        kpIndex: number; // 0-9
-        severity: 'minor' | 'moderate' | 'strong' | 'severe' | 'extreme';
-        startTime: string;
-        estimatedEndTime: string;
-    }>;
-    solarFlares: Array<{
-        id: string;
-        class: string; // e.g. "X1.5", "M3.2"
-        region: number;
-        peakTime: string;
-        duration: number; // minutes
-    }>;
-    auroraForecast: {
-        northernHemisphere: { latitude: number; probability: number }[];
-        southernHemisphere: { latitude: number; probability: number }[];
-    };
+    solarWind: SolarWind | null;
+    geomagneticStorms: GeomagneticStorm[];
+    solarFlares: SolarFlare[];
+    auroraForecast: AuroraForecast;
     timestamp: string;
 }
 
 export interface NearEarthObject {
-    id: string;
     name: string;
-    designation: string;
-    estimatedDiameter: { min: number; max: number }; // meters
+    estimatedDiameter: { min: number; best: number; max: number }; // meters
     isHazardous: boolean;
     closeApproachDate: string;
     missDistance: { astronomical: number; kilometers: number };
@@ -46,10 +49,9 @@ export interface NearEarthObjectsData {
 }
 
 export interface Exoplanet {
-    id: string;
     name: string;
     hostStar: string;
-    distanceLightYears: number;
+    distanceLightYears: number | null;
     orbitalPeriod: number; // days
     mass: number; // Earth masses
     radius: number; // Earth radii
@@ -93,11 +95,10 @@ export interface GravitationalWaveEvent {
     id: string;
     eventName: string;
     detectionTime: string;
-    source: 'binary-black-hole' | 'binary-neutron-star' | 'neutron-star-black-hole' | 'unknown';
+    source: string;
     estimatedDistance: number; // megaparsecs
     signalToNoise: number;
     chirpMass: number; // solar masses
-    skyLocalization: { ra: string; dec: string; errorRadius: number }; // degrees
     detectors: string[];
     confidence: number; // 0-1
 }

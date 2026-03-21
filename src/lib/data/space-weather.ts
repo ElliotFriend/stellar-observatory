@@ -10,39 +10,32 @@ export function getDummySpaceWeatherData(): SpaceWeatherData {
         },
         geomagneticStorms: [
             {
-                id: 'GS-2025-0342',
                 kpIndex: 6,
                 severity: 'moderate',
-                startTime: '2025-03-15T08:30:00Z',
-                estimatedEndTime: '2025-03-15T20:00:00Z',
+                timeTag: '2025-03-15T08:30:00Z',
             },
             {
-                id: 'GS-2025-0343',
                 kpIndex: 4,
                 severity: 'minor',
-                startTime: '2025-03-16T14:00:00Z',
-                estimatedEndTime: '2025-03-16T22:00:00Z',
+                timeTag: '2025-03-16T14:00:00Z',
             },
         ],
         solarFlares: [
             {
-                id: 'SF-2025-1201',
+                sourceSatellite: 3,
                 class: 'M3.2',
-                region: 3842,
                 peakTime: '2025-03-14T11:42:00Z',
                 duration: 28,
             },
             {
-                id: 'SF-2025-1202',
+                sourceSatellite: 1,
                 class: 'X1.5',
-                region: 3845,
                 peakTime: '2025-03-15T03:17:00Z',
                 duration: 45,
             },
             {
-                id: 'SF-2025-1203',
+                sourceSatellite: 3,
                 class: 'C8.7',
-                region: 3842,
                 peakTime: '2025-03-15T19:03:00Z',
                 duration: 12,
             },
@@ -66,7 +59,7 @@ export function getDummySpaceWeatherData(): SpaceWeatherData {
 export function getSpaceWeatherPreview() {
     const data = getDummySpaceWeatherData();
     return {
-        solarWindSpeed: data.solarWind.speed,
+        solarWindSpeed: data.solarWind?.speed,
         activeStorms: data.geomagneticStorms.length,
         maxKpIndex: Math.max(...data.geomagneticStorms.map((s) => s.kpIndex)),
         recentFlareClass: data.solarFlares[data.solarFlares.length - 1]?.class,

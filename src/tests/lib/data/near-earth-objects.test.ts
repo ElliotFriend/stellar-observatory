@@ -10,7 +10,6 @@ describe('near earth objects data', () => {
         expect(data.objects.length).toBeGreaterThan(0);
         expect(data.count).toBe(data.objects.length);
         for (const obj of data.objects) {
-            expect(obj.id).toBeTruthy();
             expect(obj.name).toBeTruthy();
             expect(obj.estimatedDiameter.min).toBeLessThan(obj.estimatedDiameter.max);
             expect(typeof obj.isHazardous).toBe('boolean');

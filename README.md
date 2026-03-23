@@ -6,13 +6,13 @@ No API keys. No subscriptions. Just connect a Stellar wallet and pay per request
 
 ## Endpoints
 
-| Endpoint                       | Price  | Data                                                     |
-| ------------------------------ | ------ | -------------------------------------------------------- |
-| `GET /api/space-weather`       | $0.001 | Solar wind, geomagnetic storms, flares, aurora forecast  |
-| `GET /api/near-earth-objects`  | $0.01  | Approaching asteroids and comets within 30 days          |
-| `GET /api/exoplanets`          | $0.05  | Confirmed exoplanets with habitability scores            |
-| `GET /api/deep-sky-catalog`    | $0.10  | Galaxies, nebulae, clusters with imaging recommendations |
-| `GET /api/gravitational-waves` | $0.25  | LIGO/Virgo gravitational wave detection events           |
+| Endpoint                       | Price   | Data                                                     |
+| ------------------------------ | ------- | -------------------------------------------------------- |
+| `GET /api/space-weather`       | $0.0001 | Solar wind, geomagnetic storms, flares, aurora forecast  |
+| `GET /api/near-earth-objects`  | $0.001  | Approaching asteroids and comets within 30 days          |
+| `GET /api/exoplanets`          | $0.005  | Confirmed exoplanets with habitability scores            |
+| `GET /api/deep-sky-catalog`    | $0.01   | Galaxies, nebulae, clusters with imaging recommendations |
+| `GET /api/gravitational-waves` | $0.025  | LIGO/Virgo gravitational wave detection events           |
 
 ## Quick Start
 

@@ -42,13 +42,20 @@ const resourceServers = new Map(
     VALID_NETWORKS.map((network) => [network, createResourceServer(network)]),
 );
 
-const initPromise = Promise.all(
-    [...resourceServers.values()].map((s) =>
-        s.initialize().catch((err) => {
-            console.error('Failed to initialize x402 resource server:', err);
-        }),
-    ),
-);
+const initialized = new Set<StellarNetwork>();
+
+async function ensureInitialized(network: StellarNetwork) {
+    if (initialized.has(network)) return;
+
+    const server = resourceServers.get(network)!;
+    try {
+        await server.initialize();
+        initialized.add(network);
+    } catch (err) {
+        console.error(`Failed to initialize x402 resource server for ${network}:`, err);
+        throw err;
+    }
+}
 
 const dynamicRoutes = new Map(
     endpoints.map((ep) => [
@@ -74,9 +81,8 @@ const x402Handle: Handle = async ({ event, resolve }) => {
     const dynamicConfig = dynamicRoutes.get(event.url.pathname);
     if (!dynamicConfig) return resolve(event);
 
-    await initPromise;
-
     const network = getNetworkFromCookie(event.cookies.get(NETWORK_COOKIE_NAME));
+    await ensureInitialized(network);
     const resourceServer = resourceServers.get(network)!;
 
     const clonedRequest = event.request.clone();

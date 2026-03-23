@@ -50,7 +50,7 @@
         >
         Network &middot;
         <a
-            href="https://github.com/elliotfriend/stellar-observer"
+            href="https://github.com/elliotfriend/stellar-observatory"
             target="_blank"
             class="text-slate-400 transition-colors hover:text-white">Source Code</a
         >

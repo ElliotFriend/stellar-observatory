@@ -1,5 +1,7 @@
 import { describe, it, expect } from 'vitest';
-import { endpoints, getEndpointBySlug } from '$lib/config/endpoints';
+import { readdirSync, statSync, existsSync } from 'node:fs';
+import { join } from 'node:path';
+import { endpoints, apiRoutes, getEndpointBySlug } from '$lib/config/endpoints';
 
 describe('endpoints config', () => {
     it('has 5 endpoints', () => {
@@ -44,5 +46,53 @@ describe('endpoints config', () => {
         for (let i = 1; i < prices.length; i++) {
             expect(prices[i]).toBeGreaterThanOrEqual(prices[i - 1]);
         }
+    });
+
+    it('every endpoint has a method and responseSchema', () => {
+        for (const ep of endpoints) {
+            expect(ep.method).toBe('GET');
+            expect(ep.responseSchema).toBeDefined();
+        }
+    });
+});
+
+function listApiServerRoutes(): string[] {
+    const apiDir = join(process.cwd(), 'src/routes/api');
+    const out: string[] = [];
+    for (const name of readdirSync(apiDir)) {
+        const full = join(apiDir, name);
+        if (!statSync(full).isDirectory()) continue;
+        if (existsSync(join(full, '+server.ts'))) out.push(`/api/${name}`);
+    }
+    return out.sort();
+}
+
+describe('apiRoutes ↔ filesystem parity', () => {
+    const fsRoutes = listApiServerRoutes();
+
+    it('every +server.ts has an apiRoutes entry', () => {
+        const registered = new Set(apiRoutes.map((r) => r.path));
+        for (const path of fsRoutes) {
+            expect(registered.has(path), `missing apiRoutes entry for ${path}`).toBe(true);
+        }
+    });
+
+    it('every apiRoutes entry has a corresponding +server.ts', () => {
+        const onDisk = new Set(fsRoutes);
+        for (const route of apiRoutes) {
+            expect(onDisk.has(route.path), `no +server.ts for ${route.path}`).toBe(true);
+        }
+    });
+
+    it('apiRoutes count matches filesystem count', () => {
+        expect(apiRoutes).toHaveLength(fsRoutes.length);
+    });
+
+    it('apiRoutes includes the unpaid /api/network entry', () => {
+        const network = apiRoutes.find((r) => r.path === '/api/network');
+        expect(network).toBeDefined();
+        expect(network!.method).toBe('POST');
+        expect(network!.price).toBeUndefined();
+        expect(network!.requestSchema).toBeDefined();
     });
 });

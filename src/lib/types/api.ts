@@ -36,10 +36,14 @@ export type GravitationalWavesData = z.infer<typeof GravitationalWavesDataSchema
 export interface EndpointConfig {
     slug: string;
     path: string;
+    method: 'GET';
     price: string;
     description: string;
     previewDescription: string;
     icon: string;
+    summary?: string;
+    tags?: string[];
+    responseSchema: z.ZodTypeAny;
 }
 
 export type ApiResponse =

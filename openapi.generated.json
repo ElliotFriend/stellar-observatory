@@ -1,0 +1,894 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Stellar Observatory API",
+    "version": "0.0.1",
+    "description": "Paid astronomy data endpoints. Supports x402 today and MPP discovery via OpenAPI 3.1 extensions."
+  },
+  "servers": [
+    {
+      "url": "https://example.invalid"
+    }
+  ],
+  "components": {
+    "schemas": {
+      "SpaceWeatherData": {
+        "type": "object",
+        "properties": {
+          "solarWind": {
+            "$ref": "#/components/schemas/SolarWind"
+          },
+          "geomagneticStorms": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/GeomagneticStorm"
+            }
+          },
+          "solarFlares": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SolarFlare"
+            }
+          },
+          "auroraForecast": {
+            "$ref": "#/components/schemas/AuroraForecast"
+          },
+          "timestamp": {
+            "type": "string",
+            "format": "date-time",
+            "description": "ISO 8601 timestamp.",
+            "example": "2025-03-15T12:00:00Z"
+          }
+        },
+        "required": [
+          "solarWind",
+          "geomagneticStorms",
+          "solarFlares",
+          "auroraForecast",
+          "timestamp"
+        ]
+      },
+      "SolarWind": {
+        "type": [
+          "object",
+          "null"
+        ],
+        "properties": {
+          "speed": {
+            "type": "number",
+            "description": "km/s"
+          },
+          "density": {
+            "type": "number",
+            "description": "protons/cm³"
+          },
+          "temperature": {
+            "type": "number",
+            "description": "Kelvin"
+          },
+          "magneticField": {
+            "type": "object",
+            "properties": {
+              "bx": {
+                "type": "number"
+              },
+              "by": {
+                "type": "number"
+              },
+              "bz": {
+                "type": "number"
+              }
+            },
+            "required": [
+              "bx",
+              "by",
+              "bz"
+            ],
+            "description": "nT"
+          }
+        },
+        "required": [
+          "speed",
+          "density",
+          "temperature",
+          "magneticField"
+        ]
+      },
+      "GeomagneticStorm": {
+        "type": "object",
+        "properties": {
+          "kpIndex": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 9
+          },
+          "severity": {
+            "type": "string",
+            "enum": [
+              "minor",
+              "moderate",
+              "strong",
+              "severe",
+              "extreme"
+            ]
+          },
+          "timeTag": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "kpIndex",
+          "severity",
+          "timeTag"
+        ]
+      },
+      "SolarFlare": {
+        "type": "object",
+        "properties": {
+          "sourceSatellite": {
+            "type": "integer"
+          },
+          "class": {
+            "type": "string",
+            "description": "Flare class, e.g. \"X1.5\", \"M3.2\""
+          },
+          "peakTime": {
+            "type": "string"
+          },
+          "duration": {
+            "type": "number",
+            "description": "minutes"
+          }
+        },
+        "required": [
+          "sourceSatellite",
+          "class",
+          "peakTime",
+          "duration"
+        ]
+      },
+      "AuroraForecast": {
+        "type": "object",
+        "properties": {
+          "northernHemisphere": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "latitude": {
+                  "type": "number"
+                },
+                "probability": {
+                  "type": "number",
+                  "minimum": 0,
+                  "maximum": 1
+                }
+              },
+              "required": [
+                "latitude",
+                "probability"
+              ]
+            }
+          },
+          "southernHemisphere": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "latitude": {
+                  "type": "number"
+                },
+                "probability": {
+                  "type": "number",
+                  "minimum": 0,
+                  "maximum": 1
+                }
+              },
+              "required": [
+                "latitude",
+                "probability"
+              ]
+            }
+          }
+        },
+        "required": [
+          "northernHemisphere",
+          "southernHemisphere"
+        ]
+      },
+      "ErrorResponse": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "status": {
+            "type": "integer"
+          },
+          "detail": {
+            "type": "string"
+          },
+          "instance": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "title",
+          "status"
+        ]
+      },
+      "NearEarthObjectsData": {
+        "type": "object",
+        "properties": {
+          "objects": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/NearEarthObject"
+            }
+          },
+          "count": {
+            "type": "integer"
+          },
+          "queryPeriod": {
+            "type": "object",
+            "properties": {
+              "start": {
+                "type": "string",
+                "description": "YYYY-MM-DD"
+              },
+              "end": {
+                "type": "string",
+                "description": "YYYY-MM-DD"
+              }
+            },
+            "required": [
+              "start",
+              "end"
+            ]
+          },
+          "timestamp": {
+            "type": "string",
+            "format": "date-time",
+            "description": "ISO 8601 timestamp.",
+            "example": "2025-03-15T12:00:00Z"
+          }
+        },
+        "required": [
+          "objects",
+          "count",
+          "queryPeriod",
+          "timestamp"
+        ]
+      },
+      "NearEarthObject": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "estimatedDiameter": {
+            "type": "object",
+            "properties": {
+              "min": {
+                "type": "number"
+              },
+              "best": {
+                "type": "number"
+              },
+              "max": {
+                "type": "number"
+              }
+            },
+            "required": [
+              "min",
+              "best",
+              "max"
+            ],
+            "description": "meters"
+          },
+          "isHazardous": {
+            "type": "boolean"
+          },
+          "closeApproachDate": {
+            "type": "string"
+          },
+          "missDistance": {
+            "type": "object",
+            "properties": {
+              "astronomical": {
+                "type": "number"
+              },
+              "kilometers": {
+                "type": "number"
+              }
+            },
+            "required": [
+              "astronomical",
+              "kilometers"
+            ]
+          },
+          "relativeVelocity": {
+            "type": "number",
+            "description": "km/s"
+          },
+          "orbitClass": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "name",
+          "estimatedDiameter",
+          "isHazardous",
+          "closeApproachDate",
+          "missDistance",
+          "relativeVelocity",
+          "orbitClass"
+        ]
+      },
+      "ExoplanetsData": {
+        "type": "object",
+        "properties": {
+          "planets": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Exoplanet"
+            }
+          },
+          "count": {
+            "type": "integer"
+          },
+          "timestamp": {
+            "type": "string",
+            "format": "date-time",
+            "description": "ISO 8601 timestamp.",
+            "example": "2025-03-15T12:00:00Z"
+          }
+        },
+        "required": [
+          "planets",
+          "count",
+          "timestamp"
+        ]
+      },
+      "Exoplanet": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "Kepler-442b"
+          },
+          "hostStar": {
+            "type": "string"
+          },
+          "distanceLightYears": {
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "orbitalPeriod": {
+            "type": "number",
+            "description": "days"
+          },
+          "mass": {
+            "type": "number",
+            "description": "Earth masses"
+          },
+          "radius": {
+            "type": "number",
+            "description": "Earth radii"
+          },
+          "equilibriumTemp": {
+            "type": "number",
+            "description": "Kelvin"
+          },
+          "discoveryMethod": {
+            "type": "string"
+          },
+          "discoveryYear": {
+            "type": "integer"
+          },
+          "habitabilityScore": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1
+          },
+          "atmosphere": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        },
+        "required": [
+          "name",
+          "hostStar",
+          "distanceLightYears",
+          "orbitalPeriod",
+          "mass",
+          "radius",
+          "equilibriumTemp",
+          "discoveryMethod",
+          "discoveryYear",
+          "habitabilityScore",
+          "atmosphere"
+        ]
+      },
+      "DeepSkyCatalogData": {
+        "type": "object",
+        "properties": {
+          "objects": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DeepSkyObject"
+            }
+          },
+          "count": {
+            "type": "integer"
+          },
+          "timestamp": {
+            "type": "string",
+            "format": "date-time",
+            "description": "ISO 8601 timestamp.",
+            "example": "2025-03-15T12:00:00Z"
+          }
+        },
+        "required": [
+          "objects",
+          "count",
+          "timestamp"
+        ]
+      },
+      "DeepSkyObject": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "catalogDesignation": {
+            "type": "string",
+            "example": "M31 / NGC 224"
+          },
+          "type": {
+            "$ref": "#/components/schemas/DeepSkyObjectType"
+          },
+          "constellation": {
+            "type": "string"
+          },
+          "rightAscension": {
+            "type": "string"
+          },
+          "declination": {
+            "type": "string"
+          },
+          "apparentMagnitude": {
+            "type": "number"
+          },
+          "imagingRecommendation": {
+            "$ref": "#/components/schemas/ImagingRecommendation"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "catalogDesignation",
+          "type",
+          "constellation",
+          "rightAscension",
+          "declination",
+          "apparentMagnitude",
+          "imagingRecommendation"
+        ]
+      },
+      "DeepSkyObjectType": {
+        "type": "string",
+        "enum": [
+          "galaxy",
+          "nebula",
+          "cluster",
+          "supernova-remnant",
+          "not-found",
+          "star"
+        ]
+      },
+      "ImagingRecommendation": {
+        "type": "object",
+        "properties": {
+          "minAperture": {
+            "type": "number",
+            "description": "mm"
+          },
+          "idealExposure": {
+            "type": "number",
+            "description": "seconds"
+          },
+          "bestMonths": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "filterSuggestion": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "minAperture",
+          "idealExposure",
+          "bestMonths",
+          "filterSuggestion"
+        ]
+      },
+      "GravitationalWavesData": {
+        "type": "object",
+        "properties": {
+          "events": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/GravitationalWaveEvent"
+            }
+          },
+          "count": {
+            "type": "integer"
+          },
+          "observingRun": {
+            "type": "string",
+            "example": "O5"
+          },
+          "timestamp": {
+            "type": "string",
+            "format": "date-time",
+            "description": "ISO 8601 timestamp.",
+            "example": "2025-03-15T12:00:00Z"
+          }
+        },
+        "required": [
+          "events",
+          "count",
+          "observingRun",
+          "timestamp"
+        ]
+      },
+      "GravitationalWaveEvent": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "eventName": {
+            "type": "string"
+          },
+          "detectionTime": {
+            "type": "string"
+          },
+          "source": {
+            "type": "string",
+            "description": "Source class, e.g. \"binary-black-hole\", \"binary-neutron-star\"."
+          },
+          "estimatedDistance": {
+            "type": "number",
+            "description": "megaparsecs"
+          },
+          "signalToNoise": {
+            "type": "number"
+          },
+          "chirpMass": {
+            "type": "number",
+            "description": "solar masses"
+          },
+          "detectors": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "confidence": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1
+          }
+        },
+        "required": [
+          "id",
+          "eventName",
+          "detectionTime",
+          "source",
+          "estimatedDistance",
+          "signalToNoise",
+          "chirpMass",
+          "detectors",
+          "confidence"
+        ]
+      },
+      "SetNetworkResponse": {
+        "type": "object",
+        "properties": {
+          "network": {
+            "$ref": "#/components/schemas/Network"
+          }
+        },
+        "required": [
+          "network"
+        ]
+      },
+      "Network": {
+        "type": "string",
+        "enum": [
+          "stellar:testnet",
+          "stellar:pubnet"
+        ]
+      },
+      "SetNetworkRequest": {
+        "type": "object",
+        "properties": {
+          "network": {
+            "$ref": "#/components/schemas/Network"
+          }
+        },
+        "required": [
+          "network"
+        ]
+      }
+    },
+    "parameters": {}
+  },
+  "paths": {
+    "/api/space-weather": {
+      "get": {
+        "summary": "Real-time space weather",
+        "description": "Solar wind, geomagnetic storms, solar flares, aurora forecast",
+        "tags": [
+          "stellar-data"
+        ],
+        "x-payment-info": {
+          "offers": [
+            {
+              "intent": "charge",
+              "method": "x402",
+              "amount": "$0.0001",
+              "currency": "USD",
+              "description": "Solar wind, geomagnetic storms, solar flares, aurora forecast"
+            }
+          ]
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SpaceWeatherData"
+                }
+              }
+            }
+          },
+          "402": {
+            "description": "Payment required",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/near-earth-objects": {
+      "get": {
+        "summary": "Near-Earth objects approaching within 30 days",
+        "description": "Approaching asteroids and comets within 30 days",
+        "tags": [
+          "stellar-data"
+        ],
+        "x-payment-info": {
+          "offers": [
+            {
+              "intent": "charge",
+              "method": "x402",
+              "amount": "$0.001",
+              "currency": "USD",
+              "description": "Approaching asteroids and comets within 30 days"
+            }
+          ]
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NearEarthObjectsData"
+                }
+              }
+            }
+          },
+          "402": {
+            "description": "Payment required",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/exoplanets": {
+      "get": {
+        "summary": "Confirmed exoplanet catalog",
+        "description": "Confirmed exoplanet database with habitability scores",
+        "tags": [
+          "stellar-data"
+        ],
+        "x-payment-info": {
+          "offers": [
+            {
+              "intent": "charge",
+              "method": "x402",
+              "amount": "$0.005",
+              "currency": "USD",
+              "description": "Confirmed exoplanet database with habitability scores"
+            }
+          ]
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExoplanetsData"
+                }
+              }
+            }
+          },
+          "402": {
+            "description": "Payment required",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/deep-sky-catalog": {
+      "get": {
+        "summary": "Deep-sky object catalog",
+        "description": "Galaxies, nebulae, clusters with imaging recommendations",
+        "tags": [
+          "stellar-data"
+        ],
+        "x-payment-info": {
+          "offers": [
+            {
+              "intent": "charge",
+              "method": "x402",
+              "amount": "$0.01",
+              "currency": "USD",
+              "description": "Galaxies, nebulae, clusters with imaging recommendations"
+            }
+          ]
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DeepSkyCatalogData"
+                }
+              }
+            }
+          },
+          "402": {
+            "description": "Payment required",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/gravitational-waves": {
+      "get": {
+        "summary": "Gravitational-wave detection events",
+        "description": "LIGO/Virgo gravitational wave detection events",
+        "tags": [
+          "stellar-data"
+        ],
+        "x-payment-info": {
+          "offers": [
+            {
+              "intent": "charge",
+              "method": "x402",
+              "amount": "$0.025",
+              "currency": "USD",
+              "description": "LIGO/Virgo gravitational wave detection events"
+            }
+          ]
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GravitationalWavesData"
+                }
+              }
+            }
+          },
+          "402": {
+            "description": "Payment required",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/network": {
+      "post": {
+        "summary": "Set active network",
+        "description": "Persist the active Stellar network choice in a cookie.",
+        "tags": [
+          "internal"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SetNetworkRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SetNetworkResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "webhooks": {},
+  "x-service-info": {
+    "name": "stellar-observatory",
+    "description": "Paid astronomy data endpoints (x402 / MPP) on Stellar.",
+    "payTo": "GA__PLACEHOLDER",
+    "networks": [
+      "stellar:pubnet",
+      "stellar:testnet"
+    ]
+  }
+}

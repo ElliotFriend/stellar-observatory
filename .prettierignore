@@ -7,3 +7,6 @@ bun.lockb
 
 # Miscellaneous
 /static/
+
+# Generated artifacts (drift gate; formatter would conflict with the writer)
+openapi.generated.json

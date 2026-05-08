@@ -12,8 +12,10 @@
         "check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
         "test:unit": "vitest",
         "test": "pnpm run test:unit -- --run",
-        "lint": "prettier --check . && eslint .",
-        "format": "prettier --write ."
+        "lint": "prettier --check . && eslint . && pnpm openapi:check",
+        "format": "prettier --write .",
+        "openapi:write": "tsx scripts/write-openapi.ts",
+        "openapi:check": "pnpm openapi:write && git diff --exit-code openapi.generated.json"
     },
     "devDependencies": {
         "@eslint/compat": "^2.1.0",
@@ -36,6 +38,7 @@
         "svelte": "^5.55.5",
         "svelte-check": "^4.4.8",
         "tailwindcss": "^4.2.4",
+        "tsx": "^4.21.0",
         "typescript": "^6.0.3",
         "typescript-eslint": "^8.59.2",
         "vite": "^8.0.11",

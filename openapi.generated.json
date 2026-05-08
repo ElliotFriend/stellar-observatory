@@ -10,6 +10,249 @@
       "url": "https://example.invalid"
     }
   ],
+  "paths": {
+    "/api/space-weather": {
+      "get": {
+        "summary": "Real-time space weather",
+        "description": "Solar wind, geomagnetic storms, solar flares, aurora forecast",
+        "tags": [
+          "stellar-data"
+        ],
+        "x-payment-info": {
+          "offers": [
+            {
+              "intent": "charge",
+              "method": "x402",
+              "amount": "$0.0001",
+              "currency": "USD",
+              "description": "Solar wind, geomagnetic storms, solar flares, aurora forecast"
+            }
+          ]
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SpaceWeatherData"
+                }
+              }
+            }
+          },
+          "402": {
+            "description": "Payment required",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/near-earth-objects": {
+      "get": {
+        "summary": "Near-Earth objects approaching within 30 days",
+        "description": "Approaching asteroids and comets within 30 days",
+        "tags": [
+          "stellar-data"
+        ],
+        "x-payment-info": {
+          "offers": [
+            {
+              "intent": "charge",
+              "method": "x402",
+              "amount": "$0.001",
+              "currency": "USD",
+              "description": "Approaching asteroids and comets within 30 days"
+            }
+          ]
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NearEarthObjectsData"
+                }
+              }
+            }
+          },
+          "402": {
+            "description": "Payment required",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/exoplanets": {
+      "get": {
+        "summary": "Confirmed exoplanet catalog",
+        "description": "Confirmed exoplanet database with habitability scores",
+        "tags": [
+          "stellar-data"
+        ],
+        "x-payment-info": {
+          "offers": [
+            {
+              "intent": "charge",
+              "method": "x402",
+              "amount": "$0.005",
+              "currency": "USD",
+              "description": "Confirmed exoplanet database with habitability scores"
+            }
+          ]
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExoplanetsData"
+                }
+              }
+            }
+          },
+          "402": {
+            "description": "Payment required",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/deep-sky-catalog": {
+      "get": {
+        "summary": "Deep-sky object catalog",
+        "description": "Galaxies, nebulae, clusters with imaging recommendations",
+        "tags": [
+          "stellar-data"
+        ],
+        "x-payment-info": {
+          "offers": [
+            {
+              "intent": "charge",
+              "method": "x402",
+              "amount": "$0.01",
+              "currency": "USD",
+              "description": "Galaxies, nebulae, clusters with imaging recommendations"
+            }
+          ]
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DeepSkyCatalogData"
+                }
+              }
+            }
+          },
+          "402": {
+            "description": "Payment required",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/gravitational-waves": {
+      "get": {
+        "summary": "Gravitational-wave detection events",
+        "description": "LIGO/Virgo gravitational wave detection events",
+        "tags": [
+          "stellar-data"
+        ],
+        "x-payment-info": {
+          "offers": [
+            {
+              "intent": "charge",
+              "method": "x402",
+              "amount": "$0.025",
+              "currency": "USD",
+              "description": "LIGO/Virgo gravitational wave detection events"
+            }
+          ]
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GravitationalWavesData"
+                }
+              }
+            }
+          },
+          "402": {
+            "description": "Payment required",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/network": {
+      "post": {
+        "summary": "Set active network",
+        "description": "Persist the active Stellar network choice in a cookie.",
+        "tags": [
+          "internal"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SetNetworkRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SetNetworkResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
   "components": {
     "schemas": {
       "SpaceWeatherData": {
@@ -638,250 +881,6 @@
     },
     "parameters": {}
   },
-  "paths": {
-    "/api/space-weather": {
-      "get": {
-        "summary": "Real-time space weather",
-        "description": "Solar wind, geomagnetic storms, solar flares, aurora forecast",
-        "tags": [
-          "stellar-data"
-        ],
-        "x-payment-info": {
-          "offers": [
-            {
-              "intent": "charge",
-              "method": "x402",
-              "amount": "$0.0001",
-              "currency": "USD",
-              "description": "Solar wind, geomagnetic storms, solar flares, aurora forecast"
-            }
-          ]
-        },
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/SpaceWeatherData"
-                }
-              }
-            }
-          },
-          "402": {
-            "description": "Payment required",
-            "content": {
-              "application/problem+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/near-earth-objects": {
-      "get": {
-        "summary": "Near-Earth objects approaching within 30 days",
-        "description": "Approaching asteroids and comets within 30 days",
-        "tags": [
-          "stellar-data"
-        ],
-        "x-payment-info": {
-          "offers": [
-            {
-              "intent": "charge",
-              "method": "x402",
-              "amount": "$0.001",
-              "currency": "USD",
-              "description": "Approaching asteroids and comets within 30 days"
-            }
-          ]
-        },
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/NearEarthObjectsData"
-                }
-              }
-            }
-          },
-          "402": {
-            "description": "Payment required",
-            "content": {
-              "application/problem+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/exoplanets": {
-      "get": {
-        "summary": "Confirmed exoplanet catalog",
-        "description": "Confirmed exoplanet database with habitability scores",
-        "tags": [
-          "stellar-data"
-        ],
-        "x-payment-info": {
-          "offers": [
-            {
-              "intent": "charge",
-              "method": "x402",
-              "amount": "$0.005",
-              "currency": "USD",
-              "description": "Confirmed exoplanet database with habitability scores"
-            }
-          ]
-        },
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ExoplanetsData"
-                }
-              }
-            }
-          },
-          "402": {
-            "description": "Payment required",
-            "content": {
-              "application/problem+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/deep-sky-catalog": {
-      "get": {
-        "summary": "Deep-sky object catalog",
-        "description": "Galaxies, nebulae, clusters with imaging recommendations",
-        "tags": [
-          "stellar-data"
-        ],
-        "x-payment-info": {
-          "offers": [
-            {
-              "intent": "charge",
-              "method": "x402",
-              "amount": "$0.01",
-              "currency": "USD",
-              "description": "Galaxies, nebulae, clusters with imaging recommendations"
-            }
-          ]
-        },
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/DeepSkyCatalogData"
-                }
-              }
-            }
-          },
-          "402": {
-            "description": "Payment required",
-            "content": {
-              "application/problem+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/gravitational-waves": {
-      "get": {
-        "summary": "Gravitational-wave detection events",
-        "description": "LIGO/Virgo gravitational wave detection events",
-        "tags": [
-          "stellar-data"
-        ],
-        "x-payment-info": {
-          "offers": [
-            {
-              "intent": "charge",
-              "method": "x402",
-              "amount": "$0.025",
-              "currency": "USD",
-              "description": "LIGO/Virgo gravitational wave detection events"
-            }
-          ]
-        },
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/GravitationalWavesData"
-                }
-              }
-            }
-          },
-          "402": {
-            "description": "Payment required",
-            "content": {
-              "application/problem+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/network": {
-      "post": {
-        "summary": "Set active network",
-        "description": "Persist the active Stellar network choice in a cookie.",
-        "tags": [
-          "internal"
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/SetNetworkRequest"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/SetNetworkResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  },
-  "webhooks": {},
   "x-service-info": {
     "name": "stellar-observatory",
     "description": "Paid astronomy data endpoints (x402 / MPP) on Stellar.",

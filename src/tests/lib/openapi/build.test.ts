@@ -91,4 +91,15 @@ describe('buildOpenApiDocument', () => {
         const b = JSON.stringify(buildOpenApiDocument(opts));
         expect(a).toBe(b);
     });
+
+    it('emits keys in conventional order, no empty webhooks', () => {
+        expect(Object.keys(doc)).toEqual([
+            'openapi',
+            'info',
+            'servers',
+            'paths',
+            'components',
+            'x-service-info',
+        ]);
+    });
 });

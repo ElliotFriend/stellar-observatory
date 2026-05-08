@@ -75,17 +75,24 @@ export function buildOpenApiDocument(opts: BuildOpenApiOptions) {
     }
 
     const generator = new OpenApiGeneratorV31(registry.definitions);
+    const generated = generator.generateDocument({
+        openapi: '3.1.0',
+        info: {
+            title: SERVICE_TITLE,
+            version: SERVICE_VERSION,
+            description: SERVICE_DESCRIPTION,
+        },
+        servers: [{ url: opts.baseUrl }],
+    });
 
+    // Explicit key order — generator emits components before paths and an empty
+    // webhooks object; reshape to the conventional layout.
+    const { paths, components, webhooks, ...rest } = generated;
     return {
-        ...generator.generateDocument({
-            openapi: '3.1.0',
-            info: {
-                title: SERVICE_TITLE,
-                version: SERVICE_VERSION,
-                description: SERVICE_DESCRIPTION,
-            },
-            servers: [{ url: opts.baseUrl }],
-        }),
+        ...rest,
+        ...(paths && { paths }),
+        ...(components && { components }),
+        ...(webhooks && Object.keys(webhooks).length > 0 && { webhooks }),
         'x-service-info': buildServiceInfo({ payTo: opts.payTo }),
     };
 }

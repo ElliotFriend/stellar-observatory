@@ -1,114 +1,37 @@
-export interface SolarWind {
-    speed: number; // km/s
-    density: number; // protons/cm³
-    temperature: number; // Kelvin
-    magneticField: { bx: number; by: number; bz: number }; // nT
-}
+import type { z } from 'zod';
+import type {
+    SolarWind as SolarWindSchema,
+    GeomagneticStorm as GeomagneticStormSchema,
+    SolarFlare as SolarFlareSchema,
+    AuroraForecast as AuroraForecastSchema,
+    SpaceWeatherData as SpaceWeatherDataSchema,
+    NearEarthObject as NearEarthObjectSchema,
+    NearEarthObjectsData as NearEarthObjectsDataSchema,
+    Exoplanet as ExoplanetSchema,
+    ExoplanetsData as ExoplanetsDataSchema,
+    DeepSkyObject as DeepSkyObjectSchema,
+    DeepSkyCatalogData as DeepSkyCatalogDataSchema,
+    GravitationalWaveEvent as GravitationalWaveEventSchema,
+    GravitationalWavesData as GravitationalWavesDataSchema,
+} from '$lib/schemas';
 
-export interface GeomagneticStorm {
-    kpIndex: number; // 0-9
-    severity: 'minor' | 'moderate' | 'strong' | 'severe' | 'extreme';
-    timeTag: string;
-}
+export type SolarWind = z.infer<typeof SolarWindSchema>;
+export type GeomagneticStorm = z.infer<typeof GeomagneticStormSchema>;
+export type SolarFlare = z.infer<typeof SolarFlareSchema>;
+export type AuroraForecast = z.infer<typeof AuroraForecastSchema>;
+export type SpaceWeatherData = z.infer<typeof SpaceWeatherDataSchema>;
 
-export interface SolarFlare {
-    sourceSatellite: number;
-    class: string; // e.g. "X1.5", "M3.2"
-    peakTime: string;
-    duration: number; // minutes
-}
+export type NearEarthObject = z.infer<typeof NearEarthObjectSchema>;
+export type NearEarthObjectsData = z.infer<typeof NearEarthObjectsDataSchema>;
 
-export interface AuroraForecast {
-    northernHemisphere: { latitude: number; probability: number }[];
-    southernHemisphere: { latitude: number; probability: number }[];
-}
+export type Exoplanet = z.infer<typeof ExoplanetSchema>;
+export type ExoplanetsData = z.infer<typeof ExoplanetsDataSchema>;
 
-export interface SpaceWeatherData {
-    solarWind: SolarWind | null;
-    geomagneticStorms: GeomagneticStorm[];
-    solarFlares: SolarFlare[];
-    auroraForecast: AuroraForecast;
-    timestamp: string;
-}
+export type DeepSkyObject = z.infer<typeof DeepSkyObjectSchema>;
+export type DeepSkyCatalogData = z.infer<typeof DeepSkyCatalogDataSchema>;
 
-export interface NearEarthObject {
-    name: string;
-    estimatedDiameter: { min: number; best: number; max: number }; // meters
-    isHazardous: boolean;
-    closeApproachDate: string;
-    missDistance: { astronomical: number; kilometers: number };
-    relativeVelocity: number; // km/s
-    orbitClass: string;
-}
-
-export interface NearEarthObjectsData {
-    objects: NearEarthObject[];
-    count: number;
-    queryPeriod: { start: string; end: string };
-    timestamp: string;
-}
-
-export interface Exoplanet {
-    name: string;
-    hostStar: string;
-    distanceLightYears: number | null;
-    orbitalPeriod: number; // days
-    mass: number; // Earth masses
-    radius: number; // Earth radii
-    equilibriumTemp: number; // Kelvin
-    discoveryMethod: string;
-    discoveryYear: number;
-    habitabilityScore: number; // 0-1
-    atmosphere: string | null;
-}
-
-export interface ExoplanetsData {
-    planets: Exoplanet[];
-    count: number;
-    timestamp: string;
-}
-
-export interface DeepSkyObject {
-    id: string;
-    name: string;
-    catalogDesignation: string; // e.g. "NGC 224", "M31"
-    type: 'galaxy' | 'nebula' | 'cluster' | 'supernova-remnant' | 'not-found' | 'star';
-    constellation: string;
-    rightAscension: string;
-    declination: string;
-    apparentMagnitude: number;
-    imagingRecommendation: {
-        minAperture: number; // mm
-        idealExposure: number; // seconds
-        bestMonths: string[];
-        filterSuggestion: string;
-    };
-}
-
-export interface DeepSkyCatalogData {
-    objects: DeepSkyObject[];
-    count: number;
-    timestamp: string;
-}
-
-export interface GravitationalWaveEvent {
-    id: string;
-    eventName: string;
-    detectionTime: string;
-    source: string;
-    estimatedDistance: number; // megaparsecs
-    signalToNoise: number;
-    chirpMass: number; // solar masses
-    detectors: string[];
-    confidence: number; // 0-1
-}
-
-export interface GravitationalWavesData {
-    events: GravitationalWaveEvent[];
-    count: number;
-    observingRun: string;
-    timestamp: string;
-}
+export type GravitationalWaveEvent = z.infer<typeof GravitationalWaveEventSchema>;
+export type GravitationalWavesData = z.infer<typeof GravitationalWavesDataSchema>;
 
 export interface EndpointConfig {
     slug: string;

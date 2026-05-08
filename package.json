@@ -43,9 +43,11 @@
         "vitest-browser-svelte": "^2.1.1"
     },
     "dependencies": {
+        "@asteasolutions/zod-to-openapi": "^8.5.0",
         "@creit-tech/stellar-wallets-kit": "jsr:^2.1.0",
         "@x402/core": "^2.11.0",
         "@x402/stellar": "^2.11.0",
-        "x402-sveltekit": "^0.1.8"
+        "x402-sveltekit": "^0.1.8",
+        "zod": "^4.4.3"
     }
 }

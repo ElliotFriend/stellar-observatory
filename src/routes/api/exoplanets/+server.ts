@@ -3,6 +3,8 @@ import type { RequestHandler } from './$types';
 import { getDummyExoplanetsData } from '$lib/data/exoplanets';
 import { NETWORK_COOKIE_NAME, getNetworkFromCookie, isTestnet } from '$lib/config/network';
 import type { ExoplanetsData, Exoplanet } from '$lib/types/api';
+import { ExoplanetsData as ExoplanetsDataSchema } from '$lib/schemas';
+import { withResponseSchema } from '$lib/openapi/validate';
 
 function calculateHabitability(eqTemp: number, radius: number, mass: number): number {
     // Simple habitability heuristic: temperature near 200-310K, radius 0.5-2.5, mass <10
@@ -44,7 +46,7 @@ const query = [
 
 const exoplanetUrl = `https://exoplanetarchive.ipac.caltech.edu/TAP/sync?query=${encodeURIComponent(query)}&format=json`;
 
-export const GET: RequestHandler = async ({ cookies, fetch }) => {
+const handle: RequestHandler = async ({ cookies, fetch }) => {
     const network = getNetworkFromCookie(cookies.get(NETWORK_COOKIE_NAME));
 
     if (isTestnet(network)) {
@@ -93,3 +95,5 @@ export const GET: RequestHandler = async ({ cookies, fetch }) => {
         });
     }
 };
+
+export const GET = withResponseSchema(ExoplanetsDataSchema, handle);

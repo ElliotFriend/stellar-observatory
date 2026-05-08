@@ -3,6 +3,8 @@ import type { RequestHandler } from './$types';
 import { getDummyNearEarthObjectsData } from '$lib/data/near-earth-objects';
 import { NETWORK_COOKIE_NAME, getNetworkFromCookie, isTestnet } from '$lib/config/network';
 import type { NearEarthObjectsData, NearEarthObject } from '$lib/types/api';
+import { NearEarthObjectsData as NearEarthObjectsDataSchema } from '$lib/schemas';
+import { withResponseSchema } from '$lib/openapi/validate';
 
 function calculateDiameters(
     diameterKm: string | null,
@@ -33,7 +35,7 @@ const nasaParams = new URLSearchParams({
 });
 const nasaUrl = `https://ssd-api.jpl.nasa.gov/cad.api?${nasaParams.toString()}`;
 
-export const GET: RequestHandler = async ({ cookies, fetch }) => {
+const handle: RequestHandler = async ({ cookies, fetch }) => {
     const network = getNetworkFromCookie(cookies.get(NETWORK_COOKIE_NAME));
 
     if (isTestnet(network)) {
@@ -90,3 +92,5 @@ export const GET: RequestHandler = async ({ cookies, fetch }) => {
         });
     }
 };
+
+export const GET = withResponseSchema(NearEarthObjectsDataSchema, handle);

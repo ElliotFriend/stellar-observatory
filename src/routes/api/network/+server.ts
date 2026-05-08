@@ -1,8 +1,10 @@
 import { json } from '@sveltejs/kit';
 import type { RequestHandler } from './$types';
 import { NETWORK_COOKIE_NAME, VALID_NETWORKS, type StellarNetwork } from '$lib/config/network';
+import { SetNetworkResponse } from '$lib/schemas';
+import { withResponseSchema } from '$lib/openapi/validate';
 
-export const POST: RequestHandler = async ({ request, cookies }) => {
+const handle: RequestHandler = async ({ request, cookies }) => {
     const body = await request.json();
     const network = body.network as StellarNetwork;
 
@@ -22,3 +24,5 @@ export const POST: RequestHandler = async ({ request, cookies }) => {
 
     return json({ network });
 };
+
+export const POST = withResponseSchema(SetNetworkResponse, handle);

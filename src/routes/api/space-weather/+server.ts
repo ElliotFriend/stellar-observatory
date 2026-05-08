@@ -3,10 +3,12 @@ import type { RequestHandler } from './$types';
 import { getDummySpaceWeatherData } from '$lib/data/space-weather';
 import { NETWORK_COOKIE_NAME, getNetworkFromCookie, isTestnet } from '$lib/config/network';
 import type { SpaceWeatherData } from '$lib/types/api';
+import { SpaceWeatherData as SpaceWeatherDataSchema } from '$lib/schemas';
+import { withResponseSchema } from '$lib/openapi/validate';
 
 const idx = (fields: string[], name: string) => fields.indexOf(name);
 
-export const GET: RequestHandler = async ({ cookies, fetch }) => {
+const handle: RequestHandler = async ({ cookies, fetch }) => {
     const network = getNetworkFromCookie(cookies.get(NETWORK_COOKIE_NAME));
 
     if (isTestnet(network)) {
@@ -113,3 +115,5 @@ export const GET: RequestHandler = async ({ cookies, fetch }) => {
         });
     }
 };
+
+export const GET = withResponseSchema(SpaceWeatherDataSchema, handle);

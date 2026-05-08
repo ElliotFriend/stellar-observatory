@@ -3,6 +3,8 @@ import type { RequestHandler } from './$types';
 import { getDummyDeepSkyCatalogData } from '$lib/data/deep-sky-catalog';
 import { NETWORK_COOKIE_NAME, getNetworkFromCookie, isTestnet } from '$lib/config/network';
 import type { DeepSkyCatalogData, DeepSkyObject } from '$lib/types/api';
+import { DeepSkyCatalogData as DeepSkyCatalogDataSchema } from '$lib/schemas';
+import { withResponseSchema } from '$lib/openapi/validate';
 
 // source: http://www.klima-luft.de/steinicke/ngcic/rev2000/Explan.htm#3 (section 3.5)
 const TYPE_MAP: Record<string, DeepSkyObject['type']> = {
@@ -51,7 +53,7 @@ const datastroParams = new URLSearchParams({
 });
 const datastroUrl = `https://www.datastro.eu/api/explore/v2.1/catalog/datasets/deep-sky-objects/records?${datastroParams.toString()}`;
 
-export const GET: RequestHandler = async ({ cookies, fetch }) => {
+const handle: RequestHandler = async ({ cookies, fetch }) => {
     const network = getNetworkFromCookie(cookies.get(NETWORK_COOKIE_NAME));
 
     if (isTestnet(network)) {
@@ -85,8 +87,8 @@ export const GET: RequestHandler = async ({ cookies, fetch }) => {
                 }
 
                 return {
-                    id: record.id,
-                    name: (record.name as string) || null,
+                    id: String(record.id ?? record.name ?? ''),
+                    name: (record.name as string) || '',
                     catalogDesignation,
                     type: mappedType,
                     constellation: (record.const as string) || 'Unknown',
@@ -98,6 +100,7 @@ export const GET: RequestHandler = async ({ cookies, fetch }) => {
                             mappedType === 'galaxy' ? 200 : mappedType === 'cluster' ? 50 : 100,
                         idealExposure:
                             mappedType === 'galaxy' ? 240 : mappedType === 'cluster' ? 60 : 180,
+                        bestMonths: [],
                         filterSuggestion:
                             mappedType === 'nebula'
                                 ? 'H-alpha or dual-narrowband'
@@ -121,3 +124,5 @@ export const GET: RequestHandler = async ({ cookies, fetch }) => {
         });
     }
 };
+
+export const GET = withResponseSchema(DeepSkyCatalogDataSchema, handle);

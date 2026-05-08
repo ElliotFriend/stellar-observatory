@@ -3,6 +3,8 @@ import type { RequestHandler } from './$types';
 import { getDummyGravitationalWavesData } from '$lib/data/gravitational-waves';
 import { NETWORK_COOKIE_NAME, getNetworkFromCookie, isTestnet } from '$lib/config/network';
 import type { GravitationalWavesData, GravitationalWaveEvent } from '$lib/types/api';
+import { GravitationalWavesData as GravitationalWavesDataSchema } from '$lib/schemas';
+import { withResponseSchema } from '$lib/openapi/validate';
 
 const GPS_EPOCH_MS = Date.UTC(1980, 0, 6, 0, 0, 0, 0);
 const GPS_LEAP_SECONDS = 18;
@@ -57,7 +59,7 @@ const params = new URLSearchParams({
 });
 const gwoscUrl = `https://gwosc.org/api/v2/event-versions?${params.toString()}`;
 
-export const GET: RequestHandler = async ({ cookies, fetch }) => {
+const handle: RequestHandler = async ({ cookies, fetch }) => {
     const network = getNetworkFromCookie(cookies.get(NETWORK_COOKIE_NAME));
 
     if (isTestnet(network)) {
@@ -106,3 +108,5 @@ export const GET: RequestHandler = async ({ cookies, fetch }) => {
         });
     }
 };
+
+export const GET = withResponseSchema(GravitationalWavesDataSchema, handle);

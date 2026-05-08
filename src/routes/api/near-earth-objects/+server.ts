@@ -12,7 +12,7 @@ function calculateDiameters(
     const best =
         diameterKm !== null
             ? Math.round(parseFloat(diameterKm) * 1000)
-            : Math.round(((1329 / Math.sqrt(0.15)) * Math.pow(10, -hMag / 5)) * 1000);
+            : Math.round((1329 / Math.sqrt(0.15)) * Math.pow(10, -hMag / 5) * 1000);
 
     if (diameterSigma !== null) {
         const sigmaM = parseFloat(diameterSigma) * 1000;
